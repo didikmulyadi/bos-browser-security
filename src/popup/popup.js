@@ -91,6 +91,161 @@ var SEC_INFO = {
   }
 };
 
+var TECH_ICONS = {
+  react: { bg: "#61DAFB", fg: "#0B101A", label: "R" },
+  "react dom": { bg: "#61DAFB", fg: "#0B101A", label: "R" },
+  "vue.js": { bg: "#41B883", label: "V" },
+  angular: { bg: "#DD0031", label: "A" },
+  angularjs: { bg: "#DD0031", label: "A" },
+  svelte: { bg: "#FF3E00", label: "S" },
+  sveltekit: { bg: "#FF3E00", label: "S" },
+  "next.js": { bg: "#000000", label: "N" },
+  nuxt: { bg: "#00DC82", fg: "#0B101A", label: "N" },
+  astro: { bg: "#FF5D01", label: "A" },
+  remix: { bg: "#121212", label: "R" },
+  gatsby: { bg: "#663399", label: "G" },
+  preact: { bg: "#673AB8", label: "P" },
+  "ember.js": { bg: "#E04E39", label: "E" },
+  "backbone.js": { bg: "#0071B5", label: "B" },
+  jquery: { bg: "#0769AD", label: "JQ" },
+  "jquery ui": { bg: "#0769AD", label: "JU" },
+  bootstrap: { bg: "#7952B3", label: "B" },
+  "tailwind css": { bg: "#06B6D4", fg: "#0B101A", label: "T" },
+  bulma: { bg: "#00D1B2", fg: "#0B101A", label: "B" },
+  foundation: { bg: "#1779BA", label: "F" },
+  "material ui": { bg: "#007FFF", label: "M" },
+  "ant design": { bg: "#1677FF", label: "A" },
+  "chakra ui": { bg: "#319795", label: "C" },
+  vuetify: { bg: "#1867C0", label: "V" },
+  "element ui": { bg: "#409EFF", label: "E" },
+  wordpress: { bg: "#21759B", label: "W" },
+  woocommerce: { bg: "#96588A", label: "W" },
+  elementor: { bg: "#92003B", label: "E" },
+  shopify: { bg: "#96BF48", fg: "#0B101A", label: "S" },
+  drupal: { bg: "#0678BE", label: "D" },
+  joomla: { bg: "#5091CD", label: "J" },
+  magento: { bg: "#EE672F", label: "M" },
+  prestashop: { bg: "#DF0067", label: "P" },
+  opencart: { bg: "#1E9CD7", label: "O" },
+  webflow: { bg: "#4353FF", label: "W" },
+  wix: { bg: "#000000", label: "W" },
+  squarespace: { bg: "#000000", label: "S" },
+  framer: { bg: "#0055FF", label: "F" },
+  ghost: { bg: "#15171A", label: "G" },
+  typo3: { bg: "#FF8700", label: "T" },
+  "google analytics": { bg: "#E37400", label: "GA" },
+  "google tag manager": { bg: "#4285F4", label: "GT" },
+  "facebook pixel": { bg: "#1877F2", label: "F" },
+  hotjar: { bg: "#FF3C00", label: "H" },
+  "microsoft clarity": { bg: "#0078D4", label: "C" },
+  segment: { bg: "#52BD94", label: "S" },
+  mixpanel: { bg: "#7856FF", label: "M" },
+  amplitude: { bg: "#1E61F0", label: "A" },
+  matomo: { bg: "#3152A0", label: "M" },
+  plausible: { bg: "#5850EC", label: "P" },
+  hubspot: { bg: "#FF7A59", label: "H" },
+  intercom: { bg: "#1F8DED", label: "I" },
+  crisp: { bg: "#1972F5", label: "C" },
+  "tawk.to": { bg: "#03A84E", label: "T" },
+  zendesk: { bg: "#03363D", label: "Z" },
+  "stripe.js": { bg: "#635BFF", label: "S" },
+  paypal: { bg: "#00457C", label: "P" },
+  klarna: { bg: "#FFB3C7", fg: "#0B101A", label: "K" },
+  braintree: { bg: "#000000", label: "B" },
+  midtrans: { bg: "#002B5B", label: "M" },
+  xendit: { bg: "#4573FF", label: "X" },
+  cloudflare: { bg: "#F38020", label: "CF" },
+  "amazon cloudfront": { bg: "#FF9900", fg: "#0B101A", label: "CF" },
+  fastly: { bg: "#FF282D", label: "F" },
+  akamai: { bg: "#009BDE", label: "A" },
+  vercel: { bg: "#000000", label: "V" },
+  netlify: { bg: "#00C7B7", fg: "#0B101A", label: "N" },
+  "github pages": { bg: "#181717", label: "GH" },
+  "firebase hosting": { bg: "#FFCA28", fg: "#0B101A", label: "F" },
+  jsdelivr: { bg: "#F3B03A", fg: "#0B101A", label: "J" },
+  cdnjs: { bg: "#F3B03A", fg: "#0B101A", label: "C" },
+  unpkg: { bg: "#000000", label: "U" },
+  "bunny cdn": { bg: "#FF6600", label: "B" },
+  nginx: { bg: "#009639", label: "N" },
+  "apache http server": { bg: "#D22128", label: "A" },
+  litespeed: { bg: "#0D5EBA", label: "L" },
+  "microsoft iis": { bg: "#0078D4", label: "I" },
+  gunicorn: { bg: "#499848", label: "G" },
+  openresty: { bg: "#00A6A6", label: "O" },
+  envoy: { bg: "#AC6199", label: "E" },
+  kestrel: { bg: "#512BD4", label: "K" },
+  php: { bg: "#777BB4", label: "P" },
+  express: { bg: "#000000", label: "E" },
+  "asp.net": { bg: "#512BD4", label: "N" },
+  "asp.net mvc": { bg: "#512BD4", label: "N" },
+  django: { bg: "#092E20", label: "D" },
+  "ruby on rails": { bg: "#CC0000", label: "R" },
+  laravel: { bg: "#FF2D20", label: "L" },
+  codeigniter: { bg: "#DD4814", label: "C" },
+  java: { bg: "#007396", label: "J" },
+  ".net": { bg: "#512BD4", label: "N" },
+  "node.js": { bg: "#339933", label: "N" },
+  javascript: { bg: "#F7DF1E", fg: "#0B101A", label: "JS" },
+  typescript: { bg: "#3178C6", label: "TS" },
+  webpack: { bg: "#8DD6F9", fg: "#0B101A", label: "W" },
+  vite: { bg: "#646CFF", label: "V" },
+  lodash: { bg: "#3492FF", label: "L" },
+  "underscore.js": { bg: "#1F4E79", label: "U" },
+  "moment.js": { bg: "#000000", label: "M" },
+  "day.js": { bg: "#FF5F00", label: "D" },
+  axios: { bg: "#5A29E4", label: "A" },
+  "socket.io": { bg: "#010101", label: "S" },
+  "d3.js": { bg: "#F9A03C", fg: "#0B101A", label: "D3" },
+  "three.js": { bg: "#000000", label: "3" },
+  "chart.js": { bg: "#FF6384", label: "C" },
+  highcharts: { bg: "#1D1D1B", label: "H" },
+  "apache echarts": { bg: "#AA344D", label: "E" },
+  apexcharts: { bg: "#2C3E50", label: "A" },
+  gsap: { bg: "#88CE02", fg: "#0B101A", label: "G" },
+  swiper: { bg: "#6332F6", label: "S" },
+  leaflet: { bg: "#199900", label: "L" },
+  "mapbox gl js": { bg: "#4264FB", label: "M" },
+  "pdf.js": { bg: "#FF3B30", label: "P" },
+  "monaco editor": { bg: "#007ACC", label: "M" },
+  codemirror: { bg: "#5B7F95", label: "C" },
+  quill: { bg: "#06B6D4", fg: "#0B101A", label: "Q" },
+  tinymce: { bg: "#D3A600", fg: "#0B101A", label: "T" },
+  ckeditor: { bg: "#0287D0", label: "C" },
+  "prism.js": { bg: "#6B7280", label: "P" },
+  "highlight.js": { bg: "#6B7280", label: "H" },
+  dompurify: { bg: "#2C3E50", label: "D" },
+  "crypto-js": { bg: "#F7931A", label: "C" },
+  sentry: { bg: "#362D59", label: "S" }
+};
+
+var CATEGORY_COLORS = {
+  "JavaScript framework": "#3B82F6",
+  "JavaScript library": "#8B5CF6",
+  "UI library": "#EC4899",
+  "CSS framework": "#06B6D4",
+  CMS: "#21759B",
+  "E-commerce": "#96BF48",
+  Analytics: "#F59E0B",
+  Payments: "#635BFF",
+  CDN: "#F38020",
+  "Web server": "#009639",
+  Hosting: "#181717",
+  "Build tool": "#646CFF",
+  "Programming language": "#64748B",
+  Security: "#DC2626",
+  Support: "#0EA5E9",
+  Marketing: "#FF7A59",
+  Visualization: "#F97316",
+  Animation: "#22C55E",
+  Maps: "#10B981",
+  Document: "#EF4444",
+  Monitoring: "#7C3AED",
+  Realtime: "#0EA5E9",
+  "Font/Icon": "#6B7280",
+  Runtime: "#339933",
+  Lainnya: "#667085"
+};
+
 var toggle = document.getElementById("enabled");
 var popupsEl = document.getElementById("popups");
 var redirectsEl = document.getElementById("redirects");
@@ -420,6 +575,57 @@ function makeAutoToggle(kind, checked) {
   return label;
 }
 
+function techInitials(name) {
+  var words = String(name || "")
+    .replace(/[^A-Za-z0-9. ]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+  var label = "";
+  for (var i = 0; i < words.length && label.length < 2; i++) {
+    label += words[i].charAt(0);
+  }
+  if (!label) label = String(name || "?").slice(0, 2);
+  return label.toUpperCase().slice(0, 2);
+}
+
+function createTechIcon(name, category) {
+  var key = String(name || "").toLowerCase();
+  var info = TECH_ICONS[key];
+  if (!info) {
+    info = {
+      bg: CATEGORY_COLORS[category] || CATEGORY_COLORS.Lainnya,
+      fg: "#FFFFFF",
+      label: techInitials(name)
+    };
+  }
+
+  var ns = "http://www.w3.org/2000/svg";
+  var svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 32 32");
+  svg.setAttribute("class", "tech-icon");
+  svg.setAttribute("aria-hidden", "true");
+
+  var rect = document.createElementNS(ns, "rect");
+  rect.setAttribute("width", "32");
+  rect.setAttribute("height", "32");
+  rect.setAttribute("rx", "8");
+  rect.setAttribute("fill", info.bg);
+
+  var text = document.createElementNS(ns, "text");
+  text.setAttribute("x", "16");
+  text.setAttribute("y", "21.5");
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("font-family", "Segoe UI, Arial, sans-serif");
+  text.setAttribute("font-size", info.label.length > 1 ? "11" : "14");
+  text.setAttribute("font-weight", "700");
+  text.setAttribute("fill", info.fg || "#FFFFFF");
+  text.textContent = info.label;
+
+  svg.appendChild(rect);
+  svg.appendChild(text);
+  return svg;
+}
+
 function renderTech(techs, reachable) {
   techlistEl.textContent = "";
   var list = (techs || []).slice().sort(function (a, b) {
@@ -444,6 +650,8 @@ function renderTech(techs, reachable) {
     var item = list[i];
     var li = document.createElement("li");
     li.title = (item.category ? item.category + " \u00b7 " : "") + (item.name || "");
+
+    li.appendChild(createTechIcon(item.name, item.category));
 
     var name = document.createElement("span");
     name.className = "tech-name";

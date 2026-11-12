@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `1.7.0`
+- Versi: `1.7.1`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -82,6 +82,7 @@ Catatan:
 - Implikasi umum: WooCommerce/Elementor → WordPress, Next.js/Gatsby/Remix → React, Nuxt → Vue.js, SvelteKit → Svelte+Vite, Laravel/CodeIgniter → PHP, Django → Python.
 - Versi diambil dari global (mis. `React.version`, `jQuery.fn.jquery`), atribut (`ng-version`), atau pola URL/header (`nginx/1.24`, `PHP/8.2`, `jquery-3.6.0.min.js`, `@5.3.2`, `?ver=`).
 - Ditampilkan per tab di popup (nama + badge versi). Versi bersifat best-effort.
+- Setiap item punya ikon badge SVG berwarna (brand color dikenal, fallback per kategori dengan monogram).
 
 ---
 
