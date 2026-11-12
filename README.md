@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `2.0.0`
+- Versi: `2.1.0`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -91,6 +91,7 @@ Catatan:
 - Setiap item punya ikon brand asli dari [Simple Icons](https://simpleicons.org) (CC0 1.0); fallback monogram kategori bila logo belum tersedia. Ikon di-bundle lokal (tanpa request eksternal).
 
 ### 10. YouTube (eksperimental)
+- Toggle **Blokir iklan YouTube** di popup (default aktif, global).
 - Strip field iklan dari respons `youtubei/v1/player`, `youtubei/v1/next`, `youtubei/v1/browse`, dan `ytInitialPlayerResponse` (mis. `adPlacements`, `playerAds`, renderer iklan).
 - CSS menyembunyikan slot iklan; auto-klik tombol skip; fallback mempercepat/melewati video iklan.
 - Menghormati toggle proteksi global dan jeda per domain.

@@ -1,4 +1,4 @@
-var SETTINGS_DEFAULT = { enabled: true, whitelist: [], siteConfig: {} };
+var SETTINGS_DEFAULT = { enabled: true, whitelist: [], siteConfig: {}, youtubeAds: true };
 
 var CHECKS = [
   ["secret_exfil", "Exfiltrasi cookie/token", "Cookie, token, atau localStorage dikirim ke domain lain"],
@@ -259,6 +259,7 @@ var noteEl = document.getElementById("checknote");
 var alertlistEl = document.getElementById("alertlist");
 var wldomainEl = document.getElementById("wldomain");
 var wltoggleEl = document.getElementById("wltoggle");
+var ytadsEl = document.getElementById("ytads");
 var techlistEl = document.getElementById("techlist");
 var techcountEl = document.getElementById("techcount");
 
@@ -285,6 +286,7 @@ function renderSettings(cfg) {
   siteConfig = cfg.siteConfig && typeof cfg.siteConfig === "object" ? cfg.siteConfig : {};
   autoHandleMap = effectiveAutoHandle(currentHost);
   whitelist = Array.isArray(cfg.whitelist) ? cfg.whitelist : [];
+  ytadsEl.checked = cfg.youtubeAds !== false;
   renderWhitelist();
 }
 
@@ -338,7 +340,7 @@ chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
 
 chrome.storage.onChanged.addListener(function (changes, area) {
   if (area !== "local") return;
-  if (changes.enabled || changes.autoHandle || changes.whitelist || changes.siteConfig) {
+  if (changes.enabled || changes.autoHandle || changes.whitelist || changes.siteConfig || changes.youtubeAds) {
     chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
       renderSettings(cfg);
       if (changes.enabled || changes.whitelist) {
@@ -387,6 +389,10 @@ document.getElementById("reset").addEventListener("click", function () {
   chrome.runtime.sendMessage({ type: "adg:resetStats", tabId: activeTabId }, function () {
     refreshTab();
   });
+});
+
+ytadsEl.addEventListener("change", function () {
+  chrome.storage.local.set({ youtubeAds: ytadsEl.checked });
 });
 
 document.getElementById("clearalerts").addEventListener("click", function () {

@@ -42,6 +42,7 @@
   var siteConfig = {};
   var globalAutoHandle = null;
   var autoHandle = null;
+  var youtubeAds = true;
   var lastChecks = null;
   var metaScheduled = false;
   var STYLE_ID = "__adg_style";
@@ -264,7 +265,10 @@
 
   function broadcastConfig() {
     try {
-      window.postMessage({ __adgCfg: 1, enabled: enabled, autoHandle: autoHandle }, "*");
+      window.postMessage(
+        { __adgCfg: 1, enabled: enabled, autoHandle: autoHandle, youtubeAds: youtubeAds },
+        "*"
+      );
     } catch (e) {}
   }
 
@@ -411,11 +415,12 @@
     } catch (e) {}
   }
 
-  chrome.storage.local.get({ enabled: true, whitelist: [], siteConfig: {} }, function (cfg) {
+  chrome.storage.local.get({ enabled: true, whitelist: [], siteConfig: {}, youtubeAds: true }, function (cfg) {
     globalEnabled = cfg.enabled !== false;
     whitelist = Array.isArray(cfg.whitelist) ? cfg.whitelist : [];
     siteConfig = cfg.siteConfig && typeof cfg.siteConfig === "object" ? cfg.siteConfig : {};
     globalAutoHandle = cfg.autoHandle === undefined ? null : cfg.autoHandle;
+    youtubeAds = cfg.youtubeAds !== false;
     refreshAutoHandle();
     applyState();
     startMetaGuard();
@@ -445,6 +450,10 @@
       globalAutoHandle = changes.autoHandle.newValue === undefined ? null : changes.autoHandle.newValue;
       refreshAutoHandle();
       syncConsentStyle();
+      broadcastConfig();
+    }
+    if (changes.youtubeAds) {
+      youtubeAds = changes.youtubeAds.newValue !== false;
       broadcastConfig();
     }
     if (changed) applyState();

@@ -221,7 +221,7 @@
     if (event.source !== window) return;
     var data = event.data;
     if (!data || data.__adgCfg !== 1) return;
-    enabled = !!data.enabled;
+    enabled = !!data.enabled && data.youtubeAds !== false;
     if (enabled) {
       injectCss();
       patchInitialData();

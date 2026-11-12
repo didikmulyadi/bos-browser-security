@@ -18,7 +18,7 @@ var RESOURCE_TYPES = [
   "websocket",
   "other"
 ];
-var SETTINGS_DEFAULT = { enabled: true, whitelist: [] };
+var SETTINGS_DEFAULT = { enabled: true, whitelist: [], youtubeAds: true };
 
 function storageGet(area, keys) {
   return new Promise(function (resolve) {
@@ -435,7 +435,8 @@ chrome.runtime.onInstalled.addListener(async function () {
   var cfg = await getCfg();
   await storageSet("local", {
     enabled: cfg.enabled,
-    autoHandle: self.__ADG_normalizeAuto(cfg.autoHandle)
+    autoHandle: self.__ADG_normalizeAuto(cfg.autoHandle),
+    youtubeAds: cfg.youtubeAds !== false
   });
   try {
     chrome.storage.local.remove(["stats", "security"]);
