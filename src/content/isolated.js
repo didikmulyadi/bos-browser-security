@@ -30,6 +30,12 @@
 
   var P = globalThis.__ADG_PATTERNS;
 
+  try {
+    if (window.top === window) {
+      chrome.runtime.sendMessage({ type: "adg:pageStart" });
+    }
+  } catch (e) {}
+
   var enabled = true;
   var globalEnabled = true;
   var whitelist = [];

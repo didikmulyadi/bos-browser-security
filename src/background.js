@@ -68,6 +68,26 @@ function emptySecurity() {
   return { events: [], counts: {} };
 }
 
+var clearPromises = {};
+
+function queueClear(tabId) {
+  if (tabId == null) return;
+  var promise = clearTabData(tabId);
+  clearPromises[tabId] = promise;
+  promise.then(function () {
+    if (clearPromises[tabId] === promise) delete clearPromises[tabId];
+  });
+}
+
+async function waitClear(tabId) {
+  var promise = clearPromises[tabId];
+  if (promise) {
+    try {
+      await promise;
+    } catch (e) {}
+  }
+}
+
 function getCfg() {
   return new Promise(function (resolve) {
     chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
@@ -138,6 +158,7 @@ function updateBadge(tabId, security) {
 
 async function recordBlocked(tabId, kind) {
   if (tabId == null) return;
+  await waitClear(tabId);
   var key = statsKey(tabId);
   var data = await storageGet("session", key);
   var stats = data[key] || emptyStats();
@@ -150,6 +171,7 @@ async function recordBlocked(tabId, kind) {
 
 async function recordSecurity(tabId, event) {
   if (tabId == null) return;
+  await waitClear(tabId);
   var key = securityKey(tabId);
   var data = await storageGet("session", key);
   var security = data[key] || emptySecurity();
@@ -176,6 +198,20 @@ async function clearTabData(tabId) {
   try {
     chrome.action.setBadgeText({ tabId: tabId, text: "" });
   } catch (e) {}
+}
+
+async function storeChecks(tabId, entry) {
+  await waitClear(tabId);
+  var payload = {};
+  payload[checksKey(tabId)] = entry;
+  await storageSet("session", payload);
+}
+
+async function storeTech(tabId, techs) {
+  await waitClear(tabId);
+  var payload = {};
+  payload[techKey(tabId)] = techs.slice(0, 200);
+  await storageSet("session", payload);
 }
 
 async function getTabData(tabId) {
@@ -277,6 +313,13 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   var tabId = sender && sender.tab && sender.tab.id != null ? sender.tab.id : null;
 
+  if (message.type === "adg:pageStart") {
+    if (tabId != null && (sender.frameId === 0 || sender.frameId == null)) {
+      queueClear(tabId);
+    }
+    return;
+  }
+
   if (message.type === "adg:blocked") {
     recordBlocked(tabId, message.kind);
     return;
@@ -289,22 +332,18 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
   if (message.type === "adg:checks") {
     if (tabId != null && (sender.frameId === 0 || sender.frameId == null)) {
-      var checksPayload = {};
-      checksPayload[checksKey(tabId)] = {
+      storeChecks(tabId, {
         checks: message.checks || null,
         enabled: message.enabled !== false,
         time: Date.now()
-      };
-      storageSet("session", checksPayload);
+      });
     }
     return;
   }
 
   if (message.type === "adg:tech") {
     if (tabId != null && (sender.frameId === 0 || sender.frameId == null) && Array.isArray(message.techs)) {
-      var techPayload = {};
-      techPayload[techKey(tabId)] = message.techs.slice(0, 200);
-      storageSet("session", techPayload);
+      storeTech(tabId, message.techs);
     }
     return;
   }
@@ -403,10 +442,6 @@ chrome.tabs.onCreated.addListener(async function (tab) {
 });
 
 chrome.tabs.onUpdated.addListener(async function (tabId, info, tab) {
-  if (info.status === "loading") {
-    clearTabData(tabId);
-  }
-
   if (!info.url || !tab.openerTabId) return;
   if (!P.isAdUrl(info.url)) return;
   var cfg = await getCfg();
@@ -416,5 +451,5 @@ chrome.tabs.onUpdated.addListener(async function (tabId, info, tab) {
 });
 
 chrome.tabs.onRemoved.addListener(function (tabId) {
-  clearTabData(tabId);
+  queueClear(tabId);
 });

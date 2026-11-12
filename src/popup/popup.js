@@ -220,10 +220,7 @@ function refreshTab() {
     currentHost = hostFromUrl(tab.url || "");
     renderWhitelist();
     chrome.runtime.sendMessage({ type: "adg:getTabData", tabId: tab.id }, function (data) {
-      if (chrome.runtime.lastError || !data) {
-        renderTabData(null);
-        return;
-      }
+      if (chrome.runtime.lastError || !data) return;
       renderTabData(data);
     });
   });

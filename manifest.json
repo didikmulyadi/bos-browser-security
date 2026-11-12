@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Bos (Browser Security)",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Bos (Browser Security): blocks ads, redirects, popups, and detects data theft.",
   "minimum_chrome_version": "119",
   "permissions": [
