@@ -28,6 +28,14 @@
 
   if (sandboxBlocksScripts()) return;
 
+  var isTopFrame = false;
+  try {
+    isTopFrame = window.top === window;
+  } catch (e) {
+    isTopFrame = false;
+  }
+  if (!isTopFrame) return;
+
   var postNative = window.postMessage.bind(window);
   var found = Object.create(null);
 

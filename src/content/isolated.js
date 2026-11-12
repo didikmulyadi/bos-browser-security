@@ -440,8 +440,16 @@
     }, ms);
   });
 
+  var isTopFrame = false;
+  try {
+    isTopFrame = window.top === window;
+  } catch (e) {
+    isTopFrame = false;
+  }
+
   [400, 1200, 3000, 6000, 9000].forEach(function (ms) {
     setTimeout(function () {
+      if (!isTopFrame) return;
       try {
         var raw = document.documentElement && document.documentElement.getAttribute("data-adg-tech");
         if (raw) send({ type: "adg:tech", techs: JSON.parse(raw) });
@@ -470,7 +478,13 @@
       return;
     }
     if (data && data.__adgTech === 1) {
-      send({ type: "adg:tech", techs: data.techs || [] });
+      var isTop = false;
+      try {
+        isTop = window.top === window;
+      } catch (e) {
+        isTop = false;
+      }
+      if (isTop) send({ type: "adg:tech", techs: data.techs || [] });
       return;
     }
     if (!data || data.__adg !== 1) return;

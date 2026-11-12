@@ -288,7 +288,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
 
   if (message.type === "adg:checks") {
-    if (tabId != null) {
+    if (tabId != null && (sender.frameId === 0 || sender.frameId == null)) {
       var checksPayload = {};
       checksPayload[checksKey(tabId)] = {
         checks: message.checks || null,
@@ -301,7 +301,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
 
   if (message.type === "adg:tech") {
-    if (tabId != null && Array.isArray(message.techs)) {
+    if (tabId != null && (sender.frameId === 0 || sender.frameId == null) && Array.isArray(message.techs)) {
       var techPayload = {};
       techPayload[techKey(tabId)] = message.techs.slice(0, 200);
       storageSet("session", techPayload);
