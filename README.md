@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `1.7.1`
+- Versi: `1.8.0`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -82,7 +82,7 @@ Catatan:
 - Implikasi umum: WooCommerce/Elementor → WordPress, Next.js/Gatsby/Remix → React, Nuxt → Vue.js, SvelteKit → Svelte+Vite, Laravel/CodeIgniter → PHP, Django → Python.
 - Versi diambil dari global (mis. `React.version`, `jQuery.fn.jquery`), atribut (`ng-version`), atau pola URL/header (`nginx/1.24`, `PHP/8.2`, `jquery-3.6.0.min.js`, `@5.3.2`, `?ver=`).
 - Ditampilkan per tab di popup (nama + badge versi). Versi bersifat best-effort.
-- Setiap item punya ikon badge SVG berwarna (brand color dikenal, fallback per kategori dengan monogram).
+- Setiap item punya ikon brand asli dari [Simple Icons](https://simpleicons.org) (CC0 1.0); fallback monogram kategori bila logo belum tersedia. Ikon di-bundle lokal (tanpa request eksternal).
 
 ---
 
@@ -118,42 +118,43 @@ Jika situs rusak karena sesuatu diblokir, matikan toggle item terkait (mis. akse
 
 ```
 bos-browser-security/
-â”œâ”€â”€ manifest.json
-â”œâ”€â”€ rules/
-â”‚   â””â”€â”€ ads.json                 # 111 rule blokir domain iklan
-â”œâ”€â”€ icons/                       # ikon 16/32/48/128
-â”œâ”€â”€ docs/                        # situs dokumentasi statis (GitHub Pages)
-â”œâ”€â”€ .github/workflows/pages.yml  # deploy docs ke GitHub Pages
-â”œâ”€â”€ LICENSE                      # MIT
-â””â”€â”€ src/
-    â”œâ”€â”€ background.js            # service worker: DNR, data per tab, badge, whitelist, tutup tab iklan
-    â”œâ”€â”€ main/
-    â”‚   â”œâ”€â”€ main-world.js        # hook window.open, Location, blokir redirect
-    â”‚   â”œâ”€â”€ security.js          # hook keamanan, analisis script, auto-handle, OneTrust
-    â”‚   â””â”€â”€ tech.js              # technology profiler (framework/library + versi)
-    â”œâ”€â”€ content/
-    â”‚   â””â”€â”€ isolated.js          # filter kosmetik, frame cleaner, meta refresh, bridge pesan, whitelist
-    â”œâ”€â”€ popup/
-    â”‚   â”œâ”€â”€ popup.html
-    â”‚   â”œâ”€â”€ popup.css
-    â”‚   â””â”€â”€ popup.js
-    â””â”€â”€ shared/
-        â”œâ”€â”€ patterns.js          # daftar domain iklan + helper URL
-        â””â”€â”€ checks.js            # daftar key pemeriksaan + default auto-handle
+├── manifest.json
+├── rules/
+│   └── ads.json                 # 111 rule blokir domain iklan
+├── icons/                       # ikon 16/32/48/128
+├── docs/                        # situs dokumentasi statis (GitHub Pages)
+├── .github/workflows/pages.yml  # deploy docs ke GitHub Pages
+├── LICENSE                      # MIT
+└── src/
+    ├── background.js            # service worker: DNR, data per tab, badge, whitelist, tutup tab iklan
+    ├── main/
+    │   ├── main-world.js        # hook window.open, Location, blokir redirect
+    │   ├── security.js          # hook keamanan, analisis script, auto-handle, OneTrust
+    │   └── tech.js              # technology profiler (framework/library + versi)
+    ├── content/
+    │   └── isolated.js          # filter kosmetik, frame cleaner, meta refresh, bridge pesan, whitelist
+    ├── popup/
+    │   ├── popup.html
+    │   ├── popup.css
+    │   └── popup.js
+    └── shared/
+        ├── patterns.js          # daftar domain iklan + helper URL
+        ├── checks.js            # daftar key pemeriksaan + default auto-handle
+        └── tech-icons.js        # logo brand (Simple Icons, CC0) untuk profiler
 ```
 
 ### Alur data
 
 ```
 MAIN world (security.js)
-   deteksi â†’ window.postMessage({__adgSec})
-        â†“
+   deteksi → window.postMessage({__adgSec})
+        ↓
 ISOLATED world (isolated.js)
    chrome.runtime.sendMessage
-        â†“
+        ↓
 background.js
    chrome.storage.session: stats_<tabId>, security_<tabId>
-        â†“
+        ↓
 popup.js
    menampilkan statistik & peringatan tab aktif
 ```
@@ -218,8 +219,8 @@ Dirilis di bawah [MIT License](LICENSE). Copyright (c) 2026 didikmulyadi.
 ## Dokumentasi
 
 - Situs dokumentasi statis: `docs/index.html` dan `docs/docs.html`
-- Deploy otomatis ke GitHub Pages lewat `.github/workflows/pages.yml` (Settings â†’ Pages â†’ Source: GitHub Actions)
-- Alternatif tanpa Actions: Settings â†’ Pages â†’ Deploy from a branch â†’ `main` / `docs`
+- Deploy otomatis ke GitHub Pages lewat `.github/workflows/pages.yml` (Settings → Pages → Source: GitHub Actions)
+- Alternatif tanpa Actions: Settings → Pages → Deploy from a branch → `main` / `docs`
 
 ---
 

@@ -588,8 +588,41 @@ function techInitials(name) {
   return label.toUpperCase().slice(0, 2);
 }
 
+function hexLuminance(hex) {
+  var value = String(hex || "").replace("#", "");
+  if (value.length !== 6) return 0.5;
+  var r = parseInt(value.slice(0, 2), 16) / 255;
+  var g = parseInt(value.slice(2, 4), 16) / 255;
+  var b = parseInt(value.slice(4, 6), 16) / 255;
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
 function createTechIcon(name, category) {
   var key = String(name || "").toLowerCase();
+  var brand = typeof __ADG_TECH_ICONS !== "undefined" ? __ADG_TECH_ICONS[key] : null;
+  var ns = "http://www.w3.org/2000/svg";
+
+  if (brand && brand.d) {
+    var brandSvg = document.createElementNS(ns, "svg");
+    brandSvg.setAttribute("viewBox", "0 0 24 24");
+    brandSvg.setAttribute("class", "tech-icon");
+    brandSvg.setAttribute("aria-hidden", "true");
+
+    var brandPath = document.createElementNS(ns, "path");
+    brandPath.setAttribute("d", brand.d);
+
+    var luminance = hexLuminance(brand.color);
+    if (luminance < 0.3 || luminance > 0.82) {
+      brandPath.setAttribute("fill", "currentColor");
+      brandSvg.style.color = "var(--text)";
+    } else {
+      brandPath.setAttribute("fill", brand.color);
+    }
+
+    brandSvg.appendChild(brandPath);
+    return brandSvg;
+  }
+
   var info = TECH_ICONS[key];
   if (!info) {
     info = {
@@ -599,7 +632,6 @@ function createTechIcon(name, category) {
     };
   }
 
-  var ns = "http://www.w3.org/2000/svg";
   var svg = document.createElementNS(ns, "svg");
   svg.setAttribute("viewBox", "0 0 32 32");
   svg.setAttribute("class", "tech-icon");
