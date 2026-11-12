@@ -465,47 +465,33 @@ header {
   font-style: italic;
 }
 
-.mini {
-  position: relative;
+.auto-shield {
   flex: none;
-  width: 26px;
-  height: 15px;
-  display: inline-block;
-}
-
-.mini input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.mini .track {
-  position: absolute;
-  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
   cursor: pointer;
-  background: #c8cfdb;
-  border-radius: 999px;
-  transition: background 0.15s ease;
 }
 
-.mini .track::before {
-  content: "";
-  position: absolute;
-  width: 11px;
-  height: 11px;
-  left: 2px;
-  top: 2px;
-  border-radius: 50%;
-  background: #fff;
-  transition: transform 0.15s ease;
+.auto-shield:hover {
+  background: var(--bg-soft);
+  color: var(--text);
 }
 
-.mini input:checked + .track {
-  background: var(--ok);
+.auto-shield.on {
+  color: var(--ok);
+  background: rgba(18, 183, 106, 0.12);
 }
 
-.mini input:checked + .track::before {
-  transform: translateX(11px);
+.auto-shield svg {
+  width: 16px;
+  height: 16px;
 }
 
 .linkbtn {

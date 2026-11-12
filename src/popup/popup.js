@@ -532,7 +532,7 @@ function renderChecks(checks, isEnabled) {
       li.appendChild(chip);
     }
 
-    li.appendChild(makeAutoToggle(key, autoHandleMap[key] !== false));
+    li.appendChild(makeAutoShield(key, autoHandleMap[key] !== false));
 
     checklistEl.appendChild(li);
   }
@@ -554,25 +554,60 @@ function renderChecks(checks, isEnabled) {
   checksumEl.classList.toggle("off", activeCount === 0);
 }
 
-function makeAutoToggle(kind, checked) {
-  var label = document.createElement("label");
-  label.className = "mini";
-  label.title = "Tangani otomatis untuk item ini";
+function shieldSvg(active) {
+  var ns = "http://www.w3.org/2000/svg";
+  var svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("aria-hidden", "true");
 
-  var input = document.createElement("input");
-  input.type = "checkbox";
-  input.checked = checked;
-  input.addEventListener("change", function () {
-    autoHandleMap[kind] = input.checked;
-    chrome.runtime.sendMessage({ type: "adg:setAutoHandleItem", kind: kind, value: input.checked });
+  var body = document.createElementNS(ns, "path");
+  body.setAttribute("d", "M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z");
+
+  if (active) {
+    body.setAttribute("fill", "currentColor");
+    body.setAttribute("stroke", "none");
+
+    var check = document.createElementNS(ns, "path");
+    check.setAttribute("d", "M8.5 12.5l2.5 2.5 4.5-5");
+    check.setAttribute("fill", "none");
+    check.setAttribute("stroke", "#ffffff");
+    check.setAttribute("stroke-width", "2");
+    check.setAttribute("stroke-linecap", "round");
+    check.setAttribute("stroke-linejoin", "round");
+
+    svg.appendChild(body);
+    svg.appendChild(check);
+  } else {
+    body.setAttribute("fill", "none");
+    body.setAttribute("stroke", "currentColor");
+    body.setAttribute("stroke-width", "1.8");
+    svg.appendChild(body);
+  }
+
+  return svg;
+}
+
+function makeAutoShield(kind, checked) {
+  var button = document.createElement("button");
+  button.type = "button";
+  button.className = "auto-shield" + (checked ? " on" : "");
+  button.title = "Tangani otomatis: " + (checked ? "aktif" : "mati");
+  button.setAttribute("aria-label", "Tangani otomatis untuk item ini");
+  button.setAttribute("aria-pressed", checked ? "true" : "false");
+  button.appendChild(shieldSvg(checked));
+
+  button.addEventListener("click", function () {
+    var next = !(autoHandleMap[kind] !== false);
+    autoHandleMap[kind] = next;
+    button.classList.toggle("on", next);
+    button.setAttribute("aria-pressed", next ? "true" : "false");
+    button.title = "Tangani otomatis: " + (next ? "aktif" : "mati");
+    button.textContent = "";
+    button.appendChild(shieldSvg(next));
+    chrome.runtime.sendMessage({ type: "adg:setAutoHandleItem", kind: kind, value: next });
   });
 
-  var track = document.createElement("span");
-  track.className = "track";
-
-  label.appendChild(input);
-  label.appendChild(track);
-  return label;
+  return button;
 }
 
 function techInitials(name) {
