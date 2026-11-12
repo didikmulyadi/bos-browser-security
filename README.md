@@ -1,0 +1,198 @@
+# Bos (Browser Security)
+
+Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
+
+- Versi: `1.3.0`
+- Browser: Chrome / Edge 119+
+- Tanpa build step, tanpa server, semua proses lokal di browser.
+
+---
+
+## Fitur utama
+
+### 1. Blokir iklan jaringan
+- Memakai `declarativeNetRequest` dengan ruleset statis `rules/ads.json`.
+- Saat ini memblokir **111 domain** iklan/tracker/popunder populer (doubleclick, googlesyndication, taboola, outbrain, adsterra, propellerads, pubadx, bauval, dll).
+- Bisa dimatikan/ dinyalakan lewat toggle proteksi.
+
+### 2. Blokir redirect otomatis
+- Hook `window.open`, `Location.assign`, dan `Location.replace` di MAIN world.
+- Redirect lintas situs tanpa interaksi pengguna diblokir.
+- `meta refresh` lintas situs / ke domain iklan dihapus.
+- Klik link ke domain iklan dibatalkan.
+
+### 3. Blokir popup dan tab iklan
+- Tab baru yang mengarah ke domain iklan ditutup otomatis oleh background.
+- Iframe iklan (`about:blank`, `atContainer`, `pubadx`, dll) dideteksi dan dihapus.
+- Filter kosmetik menyembunyikan slot iklan umum.
+
+### 4. Keamanan dan deteksi pencurian data
+17 pemeriksaan, masing-masing punya toggle **tangani otomatis** sendiri (default aktif):
+
+| Pemeriksaan | Yang dideteksi | Severity | Tindakan otomatis |
+|---|---|---|---|
+| Exfiltrasi cookie/token | Cookie/token/localStorage dikirim ke domain lain | Tinggi | Request diblokir |
+| Data sensitif ke pihak ketiga | Password/email/OTP lintas situs | Sedang | Request diblokir |
+| Data ke alamat IP mentah | Request berisi data ke IP langsung | Sedang | Request diblokir |
+| Cookie lintas domain | Upaya set cookie untuk domain lain | Tinggi | Cookie write dibatalkan |
+| Perubahan `document.domain` | Memperluas akses ke subdomain | Sedang | Perubahan dibatalkan |
+| Akses clipboard | `clipboard.readText` | Sedang | Promise ditolak |
+| Akses kredensial | `navigator.credentials.get` | Tinggi | Promise ditolak |
+| Pemantau keyboard | Listener `keydown/keyup/keypress` di window/document | Sedang | Hanya tombol panah yang diteruskan |
+| Script obfuscated | Analisis skor obfuscation (`_0x`, escape, base64, eval, akses cookie/jaringan) | Rendah/Sedang/Tinggi | Sedang/tinggi di-*neutralize* |
+| Script lintas situs | Script dari `data:`, `blob:`, atau IP mentah | Tinggi | Script dinonaktifkan |
+| Iframe tersembunyi/overlay | Iframe pihak ketiga tersembunyi atau menutupi halaman | Sedang/Tinggi | Iframe disembunyikan |
+| Akses kamera/mikrofon | `getUserMedia` / `getDisplayMedia` | Tinggi | Promise ditolak |
+| Akses lokasi | `navigator.geolocation` | Sedang | Permintaan diblokir |
+| Payment Request | `PaymentRequest` | Tinggi | Constructor diblokir |
+| Kebocoran `postMessage` | Kirim data sensitif ke `*` / origin pihak ketiga | Sedang/Tinggi | Pesan tidak dikirim |
+| Fingerprint canvas | `toDataURL` / `getImageData` | Rendah | Dipantau saja |
+| Banner cookie | Banner OneTrust | - | Otomatis klik "Reject All" + sembunyikan |
+
+Catatan:
+- Yang **Rendah** hanya dipantau (tidak diblokir) karena berisiko merusak situs.
+- Semua item bisa diaktifkan/dimatikan sendiri lewat toggle kecil di popup.
+
+### 5. Data per tab
+- Statistik popup/redirect, peringatan keamanan, dan hasil pemeriksaan disimpan **per tab** di `chrome.storage.session`.
+- Badge ikon mengikuti data tab aktif.
+- Navigasi/reload mereset data tab tersebut; menutup tab menghapus datanya.
+- Tombol **Reset stats** dan **hapus** hanya berlaku untuk tab aktif.
+
+### 6. Popup
+- Status proteksi dan status network ad filter.
+- Daftar pemeriksaan keamanan dengan status hijau/merah/abu.
+- Toggle **tangani otomatis per item**.
+- Peringatan terbaru dikelompokkan per severity (Tinggi/Sedang/Rendah), cukup klik item untuk melihat detail.
+- Scrollbar custom (tidak ada scroll horizontal).
+
+---
+
+## Instalasi
+
+1. Clone repo:
+   ```bash
+   git clone https://github.com/didikmulyadi/bos-browser-security.git
+   ```
+2. Buka `chrome://extensions` (atau `edge://extensions`).
+3. Aktifkan **Developer mode**.
+4. Klik **Load unpacked**, pilih folder repo.
+5. Setelah mengubah kode, klik ikon **Reload** pada kartu ekstensi, lalu refresh halaman web (`Ctrl+Shift+R`).
+
+Tidak ada proses build. Semua file dimuat langsung.
+
+---
+
+## Cara pakai
+
+- **Toggle kanan atas**: menyalakan/mematikan seluruh proteksi.
+- **Mini toggle di setiap baris pemeriksaan**: mengatur *tangani otomatis* untuk item itu saja.
+- **Muat ulang halaman**: muncul jika content script halaman belum versi terbaru.
+- **Peringatan terbaru**: klik kartu untuk melihat penjelasan, host/detail, waktu, dan status penanganan.
+- **Reset stats / hapus**: membersihkan statistik atau peringatan tab aktif.
+
+Jika situs rusak karena sesuatu diblokir, matikan toggle item terkait (mis. akses clipboard atau geolocation), bukan seluruh ekstensi.
+
+---
+
+## Struktur project
+
+```
+bos-browser-security/
+├── manifest.json
+├── rules/
+│   └── ads.json                 # 111 rule blokir domain iklan
+├── icons/                       # ikon 16/32/48/128
+└── src/
+    ├── background.js            # service worker: DNR, data per tab, badge, tutup tab iklan
+    ├── main/
+    │   ├── main-world.js        # hook window.open, Location, blokir redirect
+    │   └── security.js          # hook keamanan, analisis script, auto-handle, OneTrust
+    ├── content/
+    │   └── isolated.js          # filter kosmetik, frame cleaner, meta refresh, bridge pesan
+    ├── popup/
+    │   ├── popup.html
+    │   ├── popup.css
+    │   └── popup.js
+    └── shared/
+        ├── patterns.js          # daftar domain iklan + helper URL
+        └── checks.js            # daftar key pemeriksaan + default auto-handle
+```
+
+### Alur data
+
+```
+MAIN world (security.js)
+   deteksi → window.postMessage({__adgSec})
+        ↓
+ISOLATED world (isolated.js)
+   chrome.runtime.sendMessage
+        ↓
+background.js
+   chrome.storage.session: stats_<tabId>, security_<tabId>
+        ↓
+popup.js
+   menampilkan statistik & peringatan tab aktif
+```
+
+Konfigurasi (proteksi dan map `autoHandle` per item) disimpan di `chrome.storage.local`.
+
+---
+
+## Permission
+
+| Permission | Alasan |
+|---|---|
+| `declarativeNetRequest` | Memblokir request iklan di level jaringan |
+| `storage` | Menyimpan pengaturan dan data per tab |
+| `tabs` | Query tab aktif, badge per tab, menutup tab iklan |
+| `host_permissions: <all_urls>` | Injeksi content script dan membaca URL tab |
+
+Ekstensi **tidak mengirim data ke mana pun**. Semua deteksi dan penanganan terjadi lokal.
+
+---
+
+## Batasan
+
+- Bukan pengganti penuh uBlock Origin/EasyList. Daftar domain masih statis dan terbatas; bisa diperluas di `src/shared/patterns.js` lalu sinkronkan `rules/ads.json`.
+- JavaScript tidak bisa membaca cookie domain lain (same-origin policy). Yang dideteksi adalah **upaya eksfiltrasi** dan penulisan cookie lintas domain.
+- Script inline yang diinjeksi parser awal bisa sudah sempat dieksekusi sebelum dianalisis. Script yang disisipkan dinamis (`appendChild`/`insertBefore`/`append`) diperiksa dan di-*neutralize* sebelum dieksekusi.
+- Auto-handle berpotensi merusak fitur situs (clipboard, geolocation, passkey, dsb). Default aktif; matikan per item jika perlu.
+- Frame yang di-sandbox tanpa `allow-scripts` sengaja dilewati agar tidak memicu error.
+- Data per tab bersifat sesi: hilang saat tab ditutup, halaman dinavigasi ulang, atau ekstensi di-reload.
+- Tidak memblokir iklan yang disajikan langsung dari domain situs (first-party) tanpa indikator tambahan.
+
+---
+
+## Pengembangan
+
+- Edit file lalu reload ekstensi. Tidak ada bundler.
+- Validasi sintaks:
+  ```bash
+  node --check src/background.js
+  node --check src/content/isolated.js
+  node --check src/main/main-world.js
+  node --check src/main/security.js
+  node --check src/popup/popup.js
+  node --check src/shared/patterns.js
+  node --check src/shared/checks.js
+  ```
+- Validasi JSON:
+  ```bash
+  node -e "JSON.parse(require('fs').readFileSync('manifest.json')); JSON.parse(require('fs').readFileSync('rules/ads.json')); console.log('ok')"
+  ```
+- Saat menambah domain iklan: tambahkan ke `AD_HOSTS` di `src/shared/patterns.js` dan regenerate `rules/ads.json` dengan format yang sama (`urlFilter: "||domain^"`).
+- Saat menambah pemeriksaan baru: tambahkan key di `src/shared/checks.js`, `buildChecks()` di `security.js`, dan daftar `CHECKS` + `SEC_INFO` di `popup.js`.
+- Naikkan `version` di `manifest.json` setiap rilis.
+
+---
+
+## Lisensi
+
+Belum ditentukan. Tambahkan file lisensi (mis. MIT) jika ingin dipublikasikan sebagai open source.
+
+---
+
+## Disclaimer
+
+Ekstensi ini dibuat untuk membantu privasi dan keamanan browsing. Deteksi bisa menghasilkan false positive/negative. Gunakan dengan risiko sendiri dan sesuaikan toggle bila ada situs yang tidak berjalan normal.
