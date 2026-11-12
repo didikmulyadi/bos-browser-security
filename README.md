@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `1.6.2`
+- Versi: `1.7.0`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -76,12 +76,12 @@ Catatan:
 - Pengaturan disimpan di `chrome.storage.local` (`whitelist`).
 
 ### 8. Technology profiler
-- Mendeteksi library, framework, package, CMS, analytics, dan CDN yang dipakai halaman beserta versinya bila tersedia.
-- Multi-sinyal (mengikuti pendekatan Wappalyzer): global `window`, DOM selector, URL `script`/`link`, `performance` resource entries, cookie, `meta[name=generator]`, dan isi inline script.
-- Implikasi umum: WooCommerce/Elementor â†’ WordPress, Next.js/Gatsby/Remix â†’ React, Nuxt â†’ Vue.js, Laravel/CodeIgniter â†’ PHP, Django â†’ Python.
-- Versi diambil dari global (mis. `React.version`, `jQuery.fn.jquery`), atribut (`ng-version`), atau pola URL (`jquery-3.6.0.min.js`, `@5.3.2`, `?ver=`).
+- Mendeteksi library, framework, package, CMS, analytics, CDN, web server, dan hosting yang dipakai halaman beserta versinya bila tersedia.
+- Multi-sinyal (mengikuti pendekatan Wappalyzer): global `window`, DOM selector/class, URL `script`/`link`, `performance` resource entries, cookie, `meta` tags, isi inline script, inline CSS, dan **HTTP response header**.
+- Header yang dipakai antara lain `Server`, `X-Powered-By`, `X-AspNet-Version`, `X-Generator`, `X-Drupal-Cache`, `X-Shopify-Stage`, `X-Vercel-Id`, `X-Nextjs-Cache`, `CF-Ray`, `Via`, dan `Set-Cookie`.
+- Implikasi umum: WooCommerce/Elementor → WordPress, Next.js/Gatsby/Remix → React, Nuxt → Vue.js, SvelteKit → Svelte+Vite, Laravel/CodeIgniter → PHP, Django → Python.
+- Versi diambil dari global (mis. `React.version`, `jQuery.fn.jquery`), atribut (`ng-version`), atau pola URL/header (`nginx/1.24`, `PHP/8.2`, `jquery-3.6.0.min.js`, `@5.3.2`, `?ver=`).
 - Ditampilkan per tab di popup (nama + badge versi). Versi bersifat best-effort.
-- Deteksi header HTTP (mis. `Server`, `X-Powered-By`) belum disertakan karena memerlukan permission `webRequest` tambahan.
 
 ---
 
@@ -168,6 +168,7 @@ Konfigurasi (proteksi dan map `autoHandle` per item) disimpan di `chrome.storage
 | `declarativeNetRequest` | Memblokir request iklan di level jaringan |
 | `storage` | Menyimpan pengaturan dan data per tab |
 | `tabs` | Query tab aktif, badge per tab, menutup tab iklan |
+| `webRequest` | Membaca header respons (server/CDN/framework) untuk profiler teknologi |
 | `host_permissions: <all_urls>` | Injeksi content script dan membaca URL tab |
 
 Ekstensi **tidak mengirim data ke mana pun**. Semua deteksi dan penanganan terjadi lokal.

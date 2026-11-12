@@ -67,7 +67,7 @@
         <p>
           Bos (Browser Security) adalah ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan,
           redirect otomatis, popup/tab iklan, sekaligus mendeteksi indikasi pencurian data.
-          Versi <strong>1.6.2</strong>, Chrome/Edge <strong>119+</strong>.
+          Versi <strong>1.7.0</strong>, Chrome/Edge <strong>119+</strong>.
         </p>
 
         <div class="callout">
@@ -135,14 +135,14 @@
           <li><strong>DOM</strong>: <code>#__next</code>, <code>[data-reactroot]</code>, <code>[ng-version]</code>, <code>[data-v-app]</code>, <code>.shopify-section</code>, <code>link[href*=wp-content]</code>, dan lainnya.</li>
           <li><strong>URL asset</strong>: pola <code>@version</code>, nama file seperti <code>jquery-3.6.0.min.js</code>, atau query <code>?ver=</code>; termasuk resource dari <code>performance.getEntriesByType("resource")</code>.</li>
           <li><strong>Cookie</strong>: <code>PHPSESSID</code>, <code>laravel_session</code>, <code>wordpress_</code>, <code>_shopify</code>, <code>__cf_bm</code>, <code>_ga</code>, dan lainnya.</li>
-          <li><strong>Inline script</strong>: token seperti <code>__NEXT_DATA__</code>, <code>__NUXT__</code>, <code>webpackChunk</code>, <code>gtag(</code>, <code>dataLayer</code>.</li>
-          <li><strong>Meta generator</strong>: WordPress, Drupal, Joomla, Ghost, TYPO3, Hugo.</li>
+          <li><strong>Inline script &amp; CSS</strong>: token seperti <code>__NEXT_DATA__</code>, <code>__NUXT__</code>, <code>webpackChunk</code>, <code>gtag(</code>, <code>dataLayer</code>, <code>--tw-</code> (Tailwind), <code>--chakra-</code>.</li>
+          <li><strong>Meta tags</strong>: WordPress, Drupal, Joomla, Ghost, TYPO3, Hugo, Webflow, Framer, dan lainnya.</li>
+          <li><strong>HTTP header</strong>: <code>Server</code>, <code>X-Powered-By</code>, <code>X-AspNet-Version</code>, <code>X-Generator</code>, <code>X-Drupal-Cache</code>, <code>X-Shopify-Stage</code>, <code>X-Vercel-Id</code>, <code>X-Nextjs-Cache</code>, <code>CF-Ray</code>, <code>Via</code>, <code>Set-Cookie</code>.</li>
         </ul>
         <p>
-          Implikasi umum diterapkan: WooCommerce/Elementor â†’ WordPress, Next.js/Gatsby/Remix â†’
-          React, Nuxt â†’ Vue.js, Laravel/CodeIgniter â†’ PHP, Django â†’ Python. Versi bersifat
-          best-effort. Deteksi header HTTP belum disertakan karena membutuhkan permission
-          <code>webRequest</code> tambahan.
+          Implikasi umum diterapkan: WooCommerce/Elementor → WordPress, Next.js/Gatsby/Remix →
+          React, Nuxt → Vue.js, SvelteKit → Svelte+Vite, Laravel/CodeIgniter → PHP, Django → Python.
+          Versi bersifat best-effort, diambil dari global, atribut, URL, atau header.
         </p>
 
         <h2 id="pemeriksaan">Pemeriksaan keamanan</h2>
@@ -234,6 +234,7 @@ docs/</code></pre>
             <tr><td>declarativeNetRequest</td><td>Memblokir request iklan dan aturan allow whitelist</td></tr>
             <tr><td>storage</td><td>Pengaturan global dan data per tab (session)</td></tr>
             <tr><td>tabs</td><td>Query tab aktif, badge per tab, menutup tab iklan</td></tr>
+            <tr><td>webRequest</td><td>Membaca header respons untuk profiler teknologi</td></tr>
             <tr><td>host_permissions: &lt;all_urls&gt;</td><td>Injeksi content script dan membaca URL tab</td></tr>
           </tbody>
         </table>

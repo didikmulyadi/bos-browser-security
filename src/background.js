@@ -60,6 +60,10 @@ function techKey(tabId) {
   return "tech_" + tabId;
 }
 
+function headerTechKey(tabId) {
+  return "headertech_" + tabId;
+}
+
 function emptyStats() {
   return { popups: 0, redirects: 0 };
 }
@@ -214,6 +218,148 @@ async function storeTech(tabId, techs) {
   await storageSet("session", payload);
 }
 
+function mergeTechLists(contentTech, headerTech) {
+  var map = {};
+  var order = [];
+
+  function put(item) {
+    if (!item || !item.name) return;
+    var key = item.name.toLowerCase();
+    if (!map[key]) {
+      map[key] = {
+        name: item.name,
+        category: item.category || "Lainnya",
+        version: item.version || ""
+      };
+      order.push(key);
+      return;
+    }
+    if (!map[key].version && item.version) map[key].version = item.version;
+    if ((!map[key].category || map[key].category === "Lainnya") && item.category) {
+      map[key].category = item.category;
+    }
+  }
+
+  (contentTech || []).forEach(put);
+  (headerTech || []).forEach(put);
+  return order.map(function (key) {
+    return map[key];
+  });
+}
+
+function headerCleanVersion(value) {
+  if (value == null) return "";
+  var text = String(value).trim();
+  if (!/^\d+(\.\d+){0,3}([-.][0-9a-z.]+)?$/i.test(text)) return "";
+  return text;
+}
+
+var HEADER_RULES = [
+  { header: "server", re: /nginx(?:\/([\d.]+))?/i, name: "Nginx", category: "Web server", version: true },
+  { header: "server", re: /apache(?:\/([\d.]+))?/i, name: "Apache HTTP Server", category: "Web server", version: true },
+  { header: "server", re: /litespeed/i, name: "LiteSpeed", category: "Web server" },
+  { header: "server", re: /microsoft-iis(?:\/([\d.]+))?/i, name: "Microsoft IIS", category: "Web server", version: true },
+  { header: "server", re: /cloudflare/i, name: "Cloudflare", category: "CDN" },
+  { header: "server", re: /gunicorn(?:\/([\d.]+))?/i, name: "Gunicorn", category: "Web server", version: true },
+  { header: "server", re: /uvicorn/i, name: "Uvicorn", category: "Web server" },
+  { header: "server", re: /caddy/i, name: "Caddy", category: "Web server" },
+  { header: "server", re: /openresty(?:\/([\d.]+))?/i, name: "OpenResty", category: "Web server", version: true },
+  { header: "server", re: /envoy/i, name: "Envoy", category: "Proxy" },
+  { header: "server", re: /kestrel/i, name: "Kestrel", category: "Web server" },
+  { header: "server", re: /github\.com/i, name: "GitHub Pages", category: "Hosting" },
+  { header: "server", re: /vercel/i, name: "Vercel", category: "Hosting" },
+  { header: "server", re: /netlify/i, name: "Netlify", category: "Hosting" },
+  { header: "server", re: /firebase/i, name: "Firebase Hosting", category: "Hosting" },
+  { header: "server", re: /amazons3/i, name: "Amazon S3", category: "Hosting" },
+  { header: "x-powered-by", re: /PHP(?:\/([\d.]+))?/i, name: "PHP", category: "Programming language", version: true },
+  { header: "x-powered-by", re: /express/i, name: "Express", category: "Web framework" },
+  { header: "x-powered-by", re: /ASP\.NET/i, name: "ASP.NET", category: "Web framework" },
+  { header: "x-powered-by", re: /Next\.js/i, name: "Next.js", category: "JavaScript framework" },
+  { header: "x-powered-by", re: /Nuxt/i, name: "Nuxt", category: "JavaScript framework" },
+  { header: "x-powered-by", re: /Django/i, name: "Django", category: "Web framework" },
+  { header: "x-powered-by", re: /Rails/i, name: "Ruby on Rails", category: "Web framework" },
+  { header: "x-powered-by", re: /Shopify/i, name: "Shopify", category: "E-commerce" },
+  { header: "x-powered-by", re: /PleskLin/i, name: "Plesk", category: "Hosting" },
+  { header: "x-aspnet-version", re: /([\d.]+)/, name: "ASP.NET", category: "Web framework", version: true },
+  { header: "x-aspnetmvc-version", re: /([\d.]+)/, name: "ASP.NET MVC", category: "Web framework", version: true },
+  { header: "x-generator", re: /Drupal(?:\s*([\d.]+))?/i, name: "Drupal", category: "CMS", version: true },
+  { header: "x-generator", re: /WordPress(?:\s*([\d.]+))?/i, name: "WordPress", category: "CMS", version: true },
+  { header: "x-drupal-cache", re: /.*/, name: "Drupal", category: "CMS" },
+  { header: "x-drupal-dynamic-cache", re: /.*/, name: "Drupal", category: "CMS" },
+  { header: "x-shopify-stage", re: /.*/, name: "Shopify", category: "E-commerce" },
+  { header: "x-shopid", re: /.*/, name: "Shopify", category: "E-commerce" },
+  { header: "x-vercel-id", re: /.*/, name: "Vercel", category: "Hosting" },
+  { header: "x-nextjs-cache", re: /.*/, name: "Next.js", category: "JavaScript framework" },
+  { header: "x-nextjs-prerender", re: /.*/, name: "Next.js", category: "JavaScript framework" },
+  { header: "cf-ray", re: /.*/, name: "Cloudflare", category: "CDN" },
+  { header: "x-litespeed-cache", re: /.*/, name: "LiteSpeed", category: "Web server" },
+  { header: "x-turbo-charged-by", re: /.*/, name: "Turbo", category: "Web framework" },
+  { header: "via", re: /cloudfront/i, name: "Amazon CloudFront", category: "CDN" },
+  { header: "via", re: /fastly/i, name: "Fastly", category: "CDN" },
+  { header: "via", re: /akamai/i, name: "Akamai", category: "CDN" },
+  { header: "x-cache", re: /cloudfront/i, name: "Amazon CloudFront", category: "CDN" },
+  { header: "x-served-by", re: /cache-/i, name: "Fastly", category: "CDN" }
+];
+
+var HEADER_COOKIE_MARKERS = [
+  { needle: "phpsessid", name: "PHP", category: "Programming language" },
+  { needle: "laravel_session", name: "Laravel", category: "Web framework" },
+  { needle: "wordpress_", name: "WordPress", category: "CMS" },
+  { needle: "wp-settings", name: "WordPress", category: "CMS" },
+  { needle: "_shopify", name: "Shopify", category: "E-commerce" },
+  { needle: "__cf_bm", name: "Cloudflare", category: "CDN" },
+  { needle: "asp.net_sessionid", name: "ASP.NET", category: "Web framework" },
+  { needle: "jsessionid", name: "Java", category: "Programming language" },
+  { needle: "csrftoken", name: "Django", category: "Web framework" },
+  { needle: "ci_session", name: "CodeIgniter", category: "Web framework" },
+  { needle: "_rails", name: "Ruby on Rails", category: "Web framework" }
+];
+
+function deriveHeaderTech(headers) {
+  var list = [];
+  var seen = {};
+
+  function put(name, category, version) {
+    if (!name) return;
+    var key = name.toLowerCase();
+    if (seen[key]) return;
+    seen[key] = true;
+    list.push({ name: name, category: category || "Lainnya", version: version || "" });
+  }
+
+  for (var i = 0; i < HEADER_RULES.length; i++) {
+    var rule = HEADER_RULES[i];
+    var value = headers[rule.header];
+    if (!value) continue;
+    var match = rule.re.exec(value);
+    if (!match) continue;
+    put(rule.name, rule.category, rule.version ? headerCleanVersion(match[1]) : "");
+  }
+
+  var cookies = (headers["set-cookie"] || "").toLowerCase();
+  if (cookies) {
+    for (var j = 0; j < HEADER_COOKIE_MARKERS.length; j++) {
+      var marker = HEADER_COOKIE_MARKERS[j];
+      if (cookies.indexOf(marker.needle) !== -1) put(marker.name, marker.category, "");
+    }
+  }
+
+  return list;
+}
+
+async function storeHeaderTech(tabId, techs) {
+  var payload = {};
+  payload[headerTechKey(tabId)] = techs;
+  await storageSet("session", payload);
+}
+
+function clearHeaderTech(tabId) {
+  if (tabId == null) return;
+  try {
+    chrome.storage.session.remove(headerTechKey(tabId));
+  } catch (e) {}
+}
+
 async function getTabData(tabId) {
   if (tabId == null) return null;
   var data = {};
@@ -222,7 +368,8 @@ async function getTabData(tabId) {
       statsKey(tabId),
       securityKey(tabId),
       checksKey(tabId),
-      techKey(tabId)
+      techKey(tabId),
+      headerTechKey(tabId)
     ]);
   } catch (e) {
     data = {};
@@ -233,7 +380,7 @@ async function getTabData(tabId) {
     security: data[securityKey(tabId)] || emptySecurity(),
     checks: checksEntry ? checksEntry.checks : null,
     checksEnabled: checksEntry ? checksEntry.enabled !== false : true,
-    tech: data[techKey(tabId)] || []
+    tech: mergeTechLists(data[techKey(tabId)] || [], data[headerTechKey(tabId)] || [])
   };
 }
 
@@ -421,6 +568,37 @@ function adTab(tab) {
   return url ? P.isAdUrl(url) : false;
 }
 
+if (chrome.webRequest && chrome.webRequest.onBeforeRequest) {
+  chrome.webRequest.onBeforeRequest.addListener(
+    function (details) {
+      if (details.tabId >= 0 && details.type === "main_frame") {
+        clearHeaderTech(details.tabId);
+      }
+    },
+    { urls: ["<all_urls>"], types: ["main_frame"] }
+  );
+
+  chrome.webRequest.onHeadersReceived.addListener(
+    function (details) {
+      if (details.tabId < 0 || details.type !== "main_frame") return;
+      var headers = {};
+      var list = details.responseHeaders || [];
+      for (var i = 0; i < list.length; i++) {
+        var name = (list[i].name || "").toLowerCase();
+        if (!name) continue;
+        if (name === "set-cookie") {
+          headers[name] = (headers[name] ? headers[name] + "; " : "") + (list[i].value || "");
+        } else {
+          headers[name] = list[i].value || "";
+        }
+      }
+      storeHeaderTech(details.tabId, deriveHeaderTech(headers));
+    },
+    { urls: ["<all_urls>"], types: ["main_frame"] },
+    ["responseHeaders"]
+  );
+}
+
 async function openerWhitelisted(openerTabId) {
   if (openerTabId == null) return false;
   try {
@@ -452,4 +630,5 @@ chrome.tabs.onUpdated.addListener(async function (tabId, info, tab) {
 
 chrome.tabs.onRemoved.addListener(function (tabId) {
   queueClear(tabId);
+  clearHeaderTech(tabId);
 });
