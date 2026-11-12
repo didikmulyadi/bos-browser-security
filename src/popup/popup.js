@@ -267,6 +267,7 @@ var lastChecks = null;
 var lastEnabled = true;
 var securityCounts = {};
 var autoHandleMap = __ADG_normalizeAuto(null);
+var shieldButtons = {};
 var currentHost = "";
 var whitelist = [];
 var settingsEnabled = true;
@@ -311,7 +312,7 @@ chrome.storage.onChanged.addListener(function (changes, area) {
     chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
       renderSettings(cfg);
       if (changes.enabled || changes.whitelist) refreshTab();
-      else if (changes.autoHandle) renderChecks(lastChecks, lastEnabled);
+      else if (changes.autoHandle) syncShieldStates();
     });
   }
 });
@@ -482,7 +483,7 @@ function queryChecksDirect(fallbackEnabled) {
 }
 
 function renderChecks(checks, isEnabled) {
-  var on = isEnabled !== false;
+  var on = isEnabled !== false && settingsEnabled !== false;
   var reachable = !!checks;
   lastChecks = checks;
   lastEnabled = on;
@@ -492,6 +493,7 @@ function renderChecks(checks, isEnabled) {
   noteEl.hidden = reachable || !on;
 
   checklistEl.textContent = "";
+  shieldButtons = {};
 
   var activeCount = 0;
   for (var i = 0; i < CHECKS.length; i++) {
@@ -532,7 +534,10 @@ function renderChecks(checks, isEnabled) {
       li.appendChild(chip);
     }
 
-    li.appendChild(makeAutoShield(key, autoHandleMap[key] !== false));
+    var preference = autoHandleMap[key] !== false;
+    var shield = makeAutoShield(key, on && preference, on);
+    shieldButtons[key] = shield;
+    li.appendChild(shield);
 
     checklistEl.appendChild(li);
   }
@@ -587,27 +592,45 @@ function shieldSvg(active) {
   return svg;
 }
 
-function makeAutoShield(kind, checked) {
+function applyShieldState(button, active, interactive) {
+  var wasOn = button.classList.contains("on");
+  button.classList.toggle("on", active);
+  button.disabled = !interactive;
+  button.setAttribute("aria-pressed", active ? "true" : "false");
+  button.title = interactive
+    ? "Tangani otomatis: " + (active ? "aktif" : "mati")
+    : "Proteksi nonaktif";
+  if (wasOn !== active) {
+    button.replaceChildren(shieldSvg(active));
+  }
+}
+
+function makeAutoShield(kind, active, interactive) {
   var button = document.createElement("button");
   button.type = "button";
-  button.className = "auto-shield" + (checked ? " on" : "");
-  button.title = "Tangani otomatis: " + (checked ? "aktif" : "mati");
+  button.className = "auto-shield";
   button.setAttribute("aria-label", "Tangani otomatis untuk item ini");
-  button.setAttribute("aria-pressed", checked ? "true" : "false");
-  button.appendChild(shieldSvg(checked));
+  applyShieldState(button, active, interactive);
 
   button.addEventListener("click", function () {
+    if (!interactive) return;
     var next = !(autoHandleMap[kind] !== false);
     autoHandleMap[kind] = next;
-    button.classList.toggle("on", next);
-    button.setAttribute("aria-pressed", next ? "true" : "false");
-    button.title = "Tangani otomatis: " + (next ? "aktif" : "mati");
-    button.textContent = "";
-    button.appendChild(shieldSvg(next));
+    applyShieldState(button, next, true);
     chrome.runtime.sendMessage({ type: "adg:setAutoHandleItem", kind: kind, value: next });
   });
 
   return button;
+}
+
+function syncShieldStates() {
+  var interactive = lastEnabled !== false;
+  var keys = Object.keys(shieldButtons);
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    var preference = autoHandleMap[key] !== false;
+    applyShieldState(shieldButtons[key], interactive && preference, interactive);
+  }
 }
 
 function techInitials(name) {

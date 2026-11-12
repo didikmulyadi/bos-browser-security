@@ -489,6 +489,16 @@ header {
   background: rgba(18, 183, 106, 0.12);
 }
 
+.auto-shield:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.auto-shield:disabled:hover {
+  background: transparent;
+  color: var(--muted);
+}
+
 .auto-shield svg {
   width: 16px;
   height: 16px;
