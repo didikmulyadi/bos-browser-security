@@ -45,6 +45,10 @@
           <li><a href="#per-domain">Konfigurasi per domain</a></li>
           <li><a href="#teknologi">Technology profiler</a></li>
         </ul>
+        <h4>Fitur</h4>
+        <ul>
+          <li><a href="#youtube">YouTube</a></li>
+        </ul>
         <h4>Keamanan</h4>
         <ul>
           <li><a href="#pemeriksaan">Pemeriksaan</a></li>
@@ -68,7 +72,7 @@
         <p>
           Bos (Browser Security) adalah ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan,
           redirect otomatis, popup/tab iklan, sekaligus mendeteksi indikasi pencurian data.
-          Versi <strong>1.9.0</strong>, Chrome/Edge <strong>119+</strong>.
+          Versi <strong>2.0.0</strong>, Chrome/Edge <strong>119+</strong>.
         </p>
 
         <div class="callout">
@@ -228,6 +232,7 @@ src/
     main-world.js
     security.js
     tech.js
+    youtube.js
   content/
     isolated.js
   popup/
@@ -255,6 +260,19 @@ docs/</code></pre>
             <tr><td>host_permissions: &lt;all_urls&gt;</td><td>Injeksi content script dan membaca URL tab</td></tr>
           </tbody>
         </table>
+
+        <h2 id="youtube">YouTube (eksperimental)</h2>
+        <p>
+          Modul YouTube berjalan hanya di domain YouTube (termasuk embed
+          <code>youtube-nocookie.com</code>) dan menghormati toggle proteksi global serta jeda per
+          domain.
+        </p>
+        <ul>
+          <li>Strip field iklan dari respons <code>youtubei/v1/player</code>, <code>next</code>, <code>browse</code>, dan <code>ytInitialPlayerResponse</code> (mis. <code>adPlacements</code>, <code>playerAds</code>, renderer iklan).</li>
+          <li>CSS menyembunyikan slot iklan, auto-klik tombol skip, dan fallback mempercepat/melewati video iklan.</li>
+          <li>Tidak menjamin 100% bebas iklan: YouTube sering A/B test dan mengubah struktur; modul bisa patah kapan saja.</li>
+          <li>Tidak mencoba melewati verifikasi Cloudflare/anti-bot.</li>
+        </ul>
 
         <h2 id="batasan">Batasan</h2>
         <ul>

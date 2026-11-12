@@ -111,6 +111,20 @@
 
   var cfChallenge = false;
 
+  var ytHost = false;
+  try {
+    var ytName = location.hostname.toLowerCase();
+    ytHost =
+      ytName === "youtube.com" ||
+      ytName.endsWith(".youtube.com") ||
+      ytName === "youtube-nocookie.com" ||
+      ytName.endsWith(".youtube-nocookie.com");
+  } catch (e) {}
+
+  function isYouTubeSite() {
+    return ytHost;
+  }
+
   function isCloudflareChallenge() {
     if (cfChallenge) return true;
     try {
@@ -162,7 +176,8 @@
   }
 
   function record(kind, severity, detail) {
-    var handled = enabled && !isCloudflareChallenge() && autoFor(kind) && severity !== "low";
+    var handled =
+      enabled && !isYouTubeSite() && !isCloudflareChallenge() && autoFor(kind) && severity !== "low";
     report(kind, severity, detail, handled);
     return handled;
   }
@@ -498,7 +513,7 @@
     if (cached) return cached;
 
     var wrapped = function (event) {
-      if (enabled && !isCloudflareChallenge() && autoFor("key_listener") && !keyAllowed(event)) {
+      if (enabled && !isYouTubeSite() && !isCloudflareChallenge() && autoFor("key_listener") && !keyAllowed(event)) {
         report("key_listener", "medium", "ketikan non-navigasi diblokir", true);
         return undefined;
       }
@@ -527,7 +542,7 @@
             "key_listener",
             "medium",
             type + " dibatasi: hanya tombol panah",
-            enabled && !isCloudflareChallenge() && autoFor("key_listener")
+            enabled && !isYouTubeSite() && !isCloudflareChallenge() && autoFor("key_listener")
           );
           return nativeAdd.call(this, type, wrapKeyListener(listener), options);
         }
@@ -670,6 +685,8 @@
       return;
     }
 
+    if (isYouTubeSite()) return;
+
     var verdict = analyzeScript(text);
     if (!verdict) return;
     var handled = enabled && !isCloudflareChallenge() && autoFor("obfuscated_script") && verdict.severity !== "low";
@@ -779,7 +796,7 @@
   }
 
   function scanFrames() {
-    if (!enabled || !P || isCloudflareChallenge()) return;
+    if (!enabled || !P || isCloudflareChallenge() || isYouTubeSite()) return;
     var frames = document.querySelectorAll("iframe");
     for (var i = 0; i < frames.length; i++) {
       var frame = frames[i];
@@ -916,7 +933,7 @@
             var challengePayload = /cf[-_]chl|challenge-platform|turnstile|hcaptcha|recaptcha/i.test(payload);
             var secret = containsSecret(payload, collectSecrets());
             if (!challengePayload && (secret || (thirdParty && SENSITIVE_RE.test(payload)))) {
-              var handledMsg = !isCloudflareChallenge() && autoFor("postmessage_leak");
+              var handledMsg = !isYouTubeSite() && !isCloudflareChallenge() && autoFor("postmessage_leak");
               report(
                 "postmessage_leak",
                 thirdParty ? "high" : "medium",

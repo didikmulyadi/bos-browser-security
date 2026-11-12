@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Bos (Browser Security)",
-  "version": "1.9.0",
+  "version": "2.0.0",
   "description": "Bos (Browser Security): blocks ads, redirects, popups, and detects data theft.",
   "minimum_chrome_version": "119",
   "permissions": [
@@ -46,6 +46,17 @@
       "match_about_blank": true,
       "match_origin_as_fallback": true,
       "world": "ISOLATED"
+    },
+    {
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://youtube.com/*",
+        "*://*.youtube-nocookie.com/*"
+      ],
+      "js": ["src/main/youtube.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
     }
   ],
   "action": {
