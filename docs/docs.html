@@ -41,7 +41,8 @@
         <ul>
           <li><a href="#instalasi">Instalasi</a></li>
           <li><a href="#penggunaan">Penggunaan</a></li>
-          <li><a href="#whitelist">Whitelist domain</a></li>
+          <li><a href="#whitelist">Whitelist / jeda proteksi</a></li>
+          <li><a href="#per-domain">Konfigurasi per domain</a></li>
           <li><a href="#teknologi">Technology profiler</a></li>
         </ul>
         <h4>Keamanan</h4>
@@ -67,7 +68,7 @@
         <p>
           Bos (Browser Security) adalah ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan,
           redirect otomatis, popup/tab iklan, sekaligus mendeteksi indikasi pencurian data.
-          Versi <strong>1.8.4</strong>, Chrome/Edge <strong>119+</strong>.
+          Versi <strong>1.9.0</strong>, Chrome/Edge <strong>119+</strong>.
         </p>
 
         <div class="callout">
@@ -89,7 +90,7 @@
         <ul>
           <li><strong>Toggle kanan atas</strong> menyalakan atau mematikan seluruh proteksi.</li>
           <li><strong>Network ad filter</strong> menunjukkan status ruleset iklan jaringan.</li>
-          <li><strong>Whitelist domain ini</strong> mengecualikan situs aktif dari proteksi.</li>
+          <li><strong>Jeda proteksi situs ini</strong> mengecualikan situs aktif dari proteksi.</li>
           <li>
             <strong>Pemeriksaan keamanan</strong> menampilkan status detektor. Dot hijau berarti
             aktif; angka merah adalah jumlah peringatan; toggle kecil di kanan mengatur tangani
@@ -105,15 +106,15 @@
           </li>
         </ul>
 
-        <h2 id="whitelist">Whitelist domain</h2>
+        <h2 id="whitelist">Whitelist / jeda proteksi per domain</h2>
         <p>
-          Whitelist mengecualikan satu domain dari pemblokiran dan deteksi tanpa mematikan ekstensi
-          secara global. Cocok untuk situs yang fiturnya terganggu oleh proteksi.
+          Jeda proteksi mengecualikan satu domain dari pemblokiran dan deteksi tanpa mematikan
+          ekstensi secara global. Cocok untuk situs yang fiturnya terganggu oleh proteksi.
         </p>
         <ol>
           <li>Buka situs yang ingin dikecualikan.</li>
-          <li>Klik ikon Bos, lalu <strong>Whitelist domain ini</strong>.</li>
-          <li>Untuk mengaktifkan kembali, klik <strong>Batalkan whitelist</strong>.</li>
+          <li>Klik ikon Bos, lalu <strong>Jeda proteksi situs ini</strong>.</li>
+          <li>Untuk mengaktifkan kembali, klik <strong>Aktifkan proteksi situs ini</strong>.</li>
         </ol>
         <p>
           Domain disimpan dalam bentuk domain dasar (mis. <code>example.com</code>) sehingga
@@ -124,6 +125,19 @@
           Whitelist mengizinkan request jaringan dari situs itu. Hanya tambahkan domain yang
           benar-benar dipercaya.
         </div>
+
+        <h2 id="per-domain">Konfigurasi shield per domain</h2>
+        <p>
+          Status shield <strong>tangani otomatis per item</strong> disimpan per domain di
+          <code>chrome.storage.local</code> (<code>siteConfig</code>), jadi bertahan setelah
+          refresh. Nilai global <code>autoHandle</code> menjadi default untuk domain yang belum
+          punya override.
+        </p>
+        <p>
+          Toggle proteksi utama tetap master global. Saat proteksi global off atau situs dijeda,
+          semua shield tampil off/disabled; preferensi per domain tetap tersimpan dan aktif lagi
+          saat proteksi dinyalakan.
+        </p>
 
         <h2 id="teknologi">Technology profiler</h2>
         <p>

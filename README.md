@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `1.8.4`
+- Versi: `1.9.0`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -68,14 +68,20 @@ Catatan:
 - Peringatan terbaru dikelompokkan per severity (Tinggi/Sedang/Rendah), cukup klik item untuk melihat detail.
 - Scrollbar custom (tidak ada scroll horizontal).
 
-### 7. Whitelist domain
+### 7. Whitelist / jeda proteksi per domain
 - Kecualikan situs aktif dari pemblokiran dan deteksi tanpa mematikan ekstensi.
-- Tombol **Whitelist domain ini** / **Batalkan whitelist** di popup.
+- Tombol **Jeda proteksi situs ini** / **Aktifkan proteksi situs ini** di popup.
 - Domain dasar disimpan (mis. `example.com`), subdomain ikut dikecualikan.
 - Diterapkan lewat aturan `allow` DNR berprioritas tinggi + content script berhenti memblokir/deteksi untuk situs tersebut.
 - Pengaturan disimpan di `chrome.storage.local` (`whitelist`).
 
-### 8. Technology profiler
+### 8. Konfigurasi shield per domain
+- Status shield **tangani otomatis per item** disimpan **per domain** di `chrome.storage.local` (`siteConfig`), jadi bertahan setelah refresh.
+- Nilai global `autoHandle` menjadi default untuk domain yang belum punya override.
+- Toggle proteksi utama tetap master global; proteksi per domain memakai tombol jeda di atas.
+- Saat proteksi global off atau situs dijeda, semua shield tampil off/disabled.
+
+### 9. Technology profiler
 - Mendeteksi library, framework, package, CMS, analytics, CDN, web server, dan hosting yang dipakai halaman beserta versinya bila tersedia.
 - Multi-sinyal (mengikuti pendekatan Wappalyzer): global `window`, DOM selector/class, URL `script`/`link`, `performance` resource entries, cookie, `meta` tags, isi inline script, inline CSS, dan **HTTP response header**.
 - Header yang dipakai antara lain `Server`, `X-Powered-By`, `X-AspNet-Version`, `X-Generator`, `X-Drupal-Cache`, `X-Shopify-Stage`, `X-Vercel-Id`, `X-Nextjs-Cache`, `CF-Ray`, `Via`, dan `Set-Cookie`.
@@ -105,7 +111,7 @@ Tidak ada proses build. Semua file dimuat langsung.
 
 - **Toggle kanan atas**: menyalakan/mematikan seluruh proteksi.
 - **Mini toggle di setiap baris pemeriksaan**: mengatur *tangani otomatis* untuk item itu saja.
-- **Whitelist domain ini**: mengecualikan situs aktif; klik **Batalkan whitelist** untuk mengaktifkan lagi.
+- **Jeda proteksi situs ini** / **Aktifkan proteksi situs ini**: mengecualikan atau mengaktifkan kembali proteksi untuk situs aktif.
 - **Muat ulang halaman**: muncul jika content script halaman belum versi terbaru.
 - **Peringatan terbaru**: klik kartu untuk melihat penjelasan, host/detail, waktu, dan status penanganan.
 - **Reset stats / hapus**: membersihkan statistik atau peringatan tab aktif.

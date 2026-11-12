@@ -39,6 +39,8 @@
   var enabled = true;
   var globalEnabled = true;
   var whitelist = [];
+  var siteConfig = {};
+  var globalAutoHandle = null;
   var autoHandle = null;
   var lastChecks = null;
   var metaScheduled = false;
@@ -284,9 +286,42 @@
     "#onetrust-consent-sdk,#onetrust-banner-sdk,#onetrust-pc-sdk,.onetrust-pc-dark-filter,.ot-sdk-container{display:none!important;}";
 
   function consentAutoOn() {
-    if (autoHandle && typeof autoHandle === "object") return autoHandle.cookie_banner !== false;
+    if (autoHandle && typeof autoHandle === "object") {
+      if (Object.prototype.hasOwnProperty.call(autoHandle, "cookie_banner")) {
+        return autoHandle.cookie_banner !== false;
+      }
+      if (typeof autoHandle.__default === "boolean") return autoHandle.__default;
+      return true;
+    }
     if (typeof autoHandle === "boolean") return autoHandle;
     return true;
+  }
+
+  function mergeAutoHandle() {
+    var merged = {};
+    if (globalAutoHandle && typeof globalAutoHandle === "object") {
+      for (var key in globalAutoHandle) merged[key] = globalAutoHandle[key];
+    } else if (globalAutoHandle === false) {
+      merged.__default = false;
+    } else {
+      merged.__default = true;
+    }
+
+    var host = "";
+    try {
+      host = location.hostname.toLowerCase();
+    } catch (e) {}
+    var base = P && P.baseDomain ? P.baseDomain(host) : host;
+    var site = siteConfig[base];
+    var overrides = site && site.autoHandle;
+    if (overrides) {
+      for (var overrideKey in overrides) merged[overrideKey] = overrides[overrideKey];
+    }
+    return merged;
+  }
+
+  function refreshAutoHandle() {
+    autoHandle = mergeAutoHandle();
   }
 
   function syncConsentStyle() {
@@ -376,10 +411,12 @@
     } catch (e) {}
   }
 
-  chrome.storage.local.get({ enabled: true, whitelist: [] }, function (cfg) {
+  chrome.storage.local.get({ enabled: true, whitelist: [], siteConfig: {} }, function (cfg) {
     globalEnabled = cfg.enabled !== false;
     whitelist = Array.isArray(cfg.whitelist) ? cfg.whitelist : [];
-    autoHandle = cfg.autoHandle === undefined ? null : cfg.autoHandle;
+    siteConfig = cfg.siteConfig && typeof cfg.siteConfig === "object" ? cfg.siteConfig : {};
+    globalAutoHandle = cfg.autoHandle === undefined ? null : cfg.autoHandle;
+    refreshAutoHandle();
     applyState();
     startMetaGuard();
   });
@@ -395,8 +432,18 @@
       whitelist = Array.isArray(changes.whitelist.newValue) ? changes.whitelist.newValue : [];
       changed = true;
     }
+    if (changes.siteConfig) {
+      siteConfig =
+        changes.siteConfig.newValue && typeof changes.siteConfig.newValue === "object"
+          ? changes.siteConfig.newValue
+          : {};
+      refreshAutoHandle();
+      syncConsentStyle();
+      broadcastConfig();
+    }
     if (changes.autoHandle) {
-      autoHandle = changes.autoHandle.newValue === undefined ? null : changes.autoHandle.newValue;
+      globalAutoHandle = changes.autoHandle.newValue === undefined ? null : changes.autoHandle.newValue;
+      refreshAutoHandle();
       syncConsentStyle();
       broadcastConfig();
     }
@@ -420,7 +467,8 @@
       return;
     }
     if (message.type === "adg:setAutoHandle") {
-      autoHandle = message.autoHandle === undefined ? null : message.autoHandle;
+      globalAutoHandle = message.autoHandle === undefined ? null : message.autoHandle;
+      refreshAutoHandle();
       syncConsentStyle();
       broadcastConfig();
     }

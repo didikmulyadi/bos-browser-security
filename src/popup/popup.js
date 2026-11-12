@@ -1,4 +1,4 @@
-var SETTINGS_DEFAULT = { enabled: true, whitelist: [] };
+var SETTINGS_DEFAULT = { enabled: true, whitelist: [], siteConfig: {} };
 
 var CHECKS = [
   ["secret_exfil", "Exfiltrasi cookie/token", "Cookie, token, atau localStorage dikirim ke domain lain"],
@@ -268,6 +268,8 @@ var lastEnabled = true;
 var securityCounts = {};
 var autoHandleMap = __ADG_normalizeAuto(null);
 var shieldButtons = {};
+var siteConfig = {};
+var globalAutoHandle = null;
 var currentHost = "";
 var whitelist = [];
 var settingsEnabled = true;
@@ -279,9 +281,37 @@ function renderSettings(cfg) {
   statusEl.textContent = isOn ? "Protection on" : "Protection off";
   statusEl.classList.toggle("off", !isOn);
   netEl.textContent = isOn ? "Active" : "Off";
-  autoHandleMap = __ADG_normalizeAuto(cfg.autoHandle);
+  globalAutoHandle = cfg.autoHandle;
+  siteConfig = cfg.siteConfig && typeof cfg.siteConfig === "object" ? cfg.siteConfig : {};
+  autoHandleMap = effectiveAutoHandle(currentHost);
   whitelist = Array.isArray(cfg.whitelist) ? cfg.whitelist : [];
   renderWhitelist();
+}
+
+function effectiveAutoHandle(host) {
+  var merged = {};
+  var baseMap = __ADG_normalizeAuto(globalAutoHandle);
+  for (var key in baseMap) merged[key] = baseMap[key];
+  if (host) {
+    var base = baseDomain(host);
+    var site = siteConfig[base];
+    var overrides = site && site.autoHandle;
+    if (overrides) {
+      for (var overrideKey in overrides) merged[overrideKey] = overrides[overrideKey];
+    }
+  }
+  return merged;
+}
+
+function saveSiteAutoHandle(kind, value) {
+  if (!currentHost) return;
+  var base = baseDomain(currentHost);
+  var site = siteConfig[base] || {};
+  var overrides = site.autoHandle || {};
+  overrides[kind] = value;
+  site.autoHandle = overrides;
+  siteConfig[base] = site;
+  chrome.storage.local.set({ siteConfig: siteConfig });
 }
 
 function renderTabData(data) {
@@ -308,11 +338,15 @@ chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
 
 chrome.storage.onChanged.addListener(function (changes, area) {
   if (area !== "local") return;
-  if (changes.enabled || changes.autoHandle || changes.whitelist) {
+  if (changes.enabled || changes.autoHandle || changes.whitelist || changes.siteConfig) {
     chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
       renderSettings(cfg);
-      if (changes.enabled || changes.whitelist) refreshTab();
-      else if (changes.autoHandle) syncShieldStates();
+      if (changes.enabled || changes.whitelist) {
+        refreshTab();
+      } else if (changes.autoHandle || changes.siteConfig) {
+        autoHandleMap = effectiveAutoHandle(currentHost);
+        syncShieldStates();
+      }
     });
   }
 });
@@ -374,6 +408,7 @@ function refreshTab() {
 
     activeTabId = tab.id;
     currentHost = hostFromUrl(tab.url || "");
+    autoHandleMap = effectiveAutoHandle(currentHost);
     renderWhitelist();
     chrome.runtime.sendMessage({ type: "adg:getTabData", tabId: tab.id }, function (data) {
       if (chrome.runtime.lastError || !data) return;
@@ -439,12 +474,12 @@ function renderWhitelist() {
 
   var isWhitelisted = hostWhitelisted(host, whitelist);
   wltoggleEl.hidden = false;
-  wltoggleEl.textContent = isWhitelisted ? "Batalkan whitelist" : "Whitelist domain ini";
+  wltoggleEl.textContent = isWhitelisted ? "Aktifkan proteksi situs ini" : "Jeda proteksi situs ini";
   wltoggleEl.classList.toggle("on", isWhitelisted);
   wltoggleEl.title = isWhitelisted
     ? "Aktifkan kembali proteksi untuk " + host
-    : "Kecualikan " + baseDomain(host) + " dari proteksi";
-  netEl.textContent = !settingsEnabled ? "Off" : isWhitelisted ? "Whitelisted" : "Active";
+    : "Jeda proteksi untuk " + baseDomain(host);
+  netEl.textContent = !settingsEnabled ? "Off" : isWhitelisted ? "Paused" : "Active";
 }
 
 wltoggleEl.addEventListener("click", function () {
@@ -617,7 +652,7 @@ function makeAutoShield(kind, active, interactive) {
     var next = !(autoHandleMap[kind] !== false);
     autoHandleMap[kind] = next;
     applyShieldState(button, next, true);
-    chrome.runtime.sendMessage({ type: "adg:setAutoHandleItem", kind: kind, value: next });
+    saveSiteAutoHandle(kind, next);
   });
 
   return button;

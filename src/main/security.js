@@ -100,7 +100,11 @@
   }
 
   function autoFor(kind) {
-    if (autoHandle && typeof autoHandle === "object") return autoHandle[kind] !== false;
+    if (autoHandle && typeof autoHandle === "object") {
+      if (Object.prototype.hasOwnProperty.call(autoHandle, kind)) return autoHandle[kind] !== false;
+      if (typeof autoHandle.__default === "boolean") return autoHandle.__default;
+      return true;
+    }
     if (typeof autoHandle === "boolean") return autoHandle;
     return true;
   }

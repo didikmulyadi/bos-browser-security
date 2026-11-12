@@ -153,11 +153,38 @@
     return ha.endsWith("." + hb) || hb.endsWith("." + ha);
   }
 
+  function baseDomain(host) {
+    if (!host) return "";
+    host = String(host).toLowerCase().replace(/\.$/, "");
+    var multi = [
+      "co.uk",
+      "co.id",
+      "co.jp",
+      "com.au",
+      "com.br",
+      "co.in",
+      "co.kr",
+      "com.tr",
+      "com.cn",
+      "com.mx",
+      "co.nz",
+      "co.za",
+      "com.sg",
+      "com.hk"
+    ];
+    var parts = host.split(".");
+    if (parts.length <= 2) return host;
+    var lastTwo = parts.slice(-2).join(".");
+    if (multi.indexOf(lastTwo) !== -1 && parts.length >= 3) return parts.slice(-3).join(".");
+    return lastTwo;
+  }
+
   root.__ADG_PATTERNS = {
     AD_HOSTS: AD_HOSTS,
     hostOf: hostOf,
     isAdHost: isAdHost,
     isAdUrl: isAdUrl,
-    sameSite: sameSite
+    sameSite: sameSite,
+    baseDomain: baseDomain
   };
 })(typeof globalThis !== "undefined" ? globalThis : self);
