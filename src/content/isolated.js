@@ -31,6 +31,8 @@
   var P = globalThis.__ADG_PATTERNS;
 
   var enabled = true;
+  var globalEnabled = true;
+  var whitelist = [];
   var autoHandle = null;
   var lastChecks = null;
   var metaScheduled = false;
@@ -294,6 +296,31 @@
     }
   }
 
+  function siteAllowed() {
+    var host = "";
+    try {
+      host = location.hostname.toLowerCase();
+    } catch (e) {}
+    if (!host) return false;
+    for (var i = 0; i < whitelist.length; i++) {
+      var domain = whitelist[i];
+      if (host === domain || host.endsWith("." + domain)) return true;
+    }
+    return false;
+  }
+
+  function applyState() {
+    enabled = globalEnabled && !siteAllowed();
+    broadcastConfig();
+    if (enabled) {
+      injectCosmetic();
+      startFrameCleaner();
+    } else {
+      removeCosmetic();
+    }
+    syncConsentStyle();
+  }
+
   function urlFromMeta(content) {
     var match = /url\s*=\s*['"]?([^'";]+)/i.exec(content || "");
     return match ? match[1].trim() : "";
@@ -343,14 +370,31 @@
     } catch (e) {}
   }
 
-  chrome.storage.local.get({ enabled: true }, function (cfg) {
-    enabled = cfg.enabled !== false;
+  chrome.storage.local.get({ enabled: true, whitelist: [] }, function (cfg) {
+    globalEnabled = cfg.enabled !== false;
+    whitelist = Array.isArray(cfg.whitelist) ? cfg.whitelist : [];
     autoHandle = cfg.autoHandle === undefined ? null : cfg.autoHandle;
-    broadcastConfig();
-    if (enabled) injectCosmetic();
-    syncConsentStyle();
+    applyState();
     startMetaGuard();
-    startFrameCleaner();
+  });
+
+  chrome.storage.onChanged.addListener(function (changes, area) {
+    if (area !== "local") return;
+    var changed = false;
+    if (changes.enabled) {
+      globalEnabled = changes.enabled.newValue !== false;
+      changed = true;
+    }
+    if (changes.whitelist) {
+      whitelist = Array.isArray(changes.whitelist.newValue) ? changes.whitelist.newValue : [];
+      changed = true;
+    }
+    if (changes.autoHandle) {
+      autoHandle = changes.autoHandle.newValue === undefined ? null : changes.autoHandle.newValue;
+      syncConsentStyle();
+      broadcastConfig();
+    }
+    if (changed) applyState();
   });
 
   chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
@@ -359,23 +403,21 @@
       sendResponse({ checks: lastChecks || readChecksAttr(), enabled: enabled });
       return;
     }
-    if (message.type !== "adg:setEnabled") {
-      if (message.type === "adg:setAutoHandle") {
-        autoHandle = message.autoHandle === undefined ? null : message.autoHandle;
-        syncConsentStyle();
-        broadcastConfig();
-      }
+    if (message.type === "adg:setEnabled") {
+      globalEnabled = !!message.enabled;
+      applyState();
       return;
     }
-    enabled = !!message.enabled;
-    broadcastConfig();
-    if (enabled) {
-      injectCosmetic();
-      startFrameCleaner();
-    } else {
-      removeCosmetic();
+    if (message.type === "adg:setWhitelist") {
+      whitelist = Array.isArray(message.whitelist) ? message.whitelist : [];
+      applyState();
+      return;
     }
-    syncConsentStyle();
+    if (message.type === "adg:setAutoHandle") {
+      autoHandle = message.autoHandle === undefined ? null : message.autoHandle;
+      syncConsentStyle();
+      broadcastConfig();
+    }
   });
 
   function readChecksAttr() {

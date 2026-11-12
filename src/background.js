@@ -2,7 +2,23 @@ importScripts("shared/patterns.js", "shared/checks.js");
 
 var P = self.__ADG_PATTERNS;
 var RULESET_ID = "ads";
-var SETTINGS_DEFAULT = { enabled: true };
+var WL_RULE_BASE = 10000;
+var RESOURCE_TYPES = [
+  "main_frame",
+  "sub_frame",
+  "stylesheet",
+  "script",
+  "image",
+  "font",
+  "object",
+  "xmlhttprequest",
+  "ping",
+  "csp_report",
+  "media",
+  "websocket",
+  "other"
+];
+var SETTINGS_DEFAULT = { enabled: true, whitelist: [] };
 
 function storageGet(area, keys) {
   return new Promise(function (resolve) {
@@ -52,9 +68,54 @@ function getCfg() {
   return new Promise(function (resolve) {
     chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
       cfg.autoHandle = self.__ADG_normalizeAuto(cfg.autoHandle);
+      cfg.whitelist = Array.isArray(cfg.whitelist) ? cfg.whitelist : [];
       resolve(cfg);
     });
   });
+}
+
+function hostFromUrl(url) {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch (e) {
+    return "";
+  }
+}
+
+function hostWhitelisted(host, whitelist) {
+  if (!host) return false;
+  for (var i = 0; i < whitelist.length; i++) {
+    var domain = whitelist[i];
+    if (host === domain || host.endsWith("." + domain)) return true;
+  }
+  return false;
+}
+
+async function rebuildWhitelistRules() {
+  try {
+    var cfg = await getCfg();
+    var existing = await chrome.declarativeNetRequest.getDynamicRules();
+    var removeRuleIds = existing.map(function (rule) {
+      return rule.id;
+    });
+    var addRules = [];
+    var seen = {};
+    for (var i = 0; i < cfg.whitelist.length; i++) {
+      var domain = cfg.whitelist[i];
+      if (!domain || seen[domain]) continue;
+      seen[domain] = true;
+      addRules.push({
+        id: WL_RULE_BASE + addRules.length,
+        priority: 100,
+        action: { type: "allow" },
+        condition: { initiatorDomains: [domain], resourceTypes: RESOURCE_TYPES }
+      });
+    }
+    await chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: removeRuleIds,
+      addRules: addRules
+    });
+  } catch (e) {}
 }
 
 function updateBadge(tabId, security) {
@@ -187,11 +248,18 @@ chrome.runtime.onInstalled.addListener(async function () {
     chrome.storage.local.remove(["stats", "security"]);
   } catch (e) {}
   await applyRuleset(cfg.enabled);
+  await rebuildWhitelistRules();
 });
 
 chrome.runtime.onStartup.addListener(async function () {
   var cfg = await getCfg();
   await applyRuleset(cfg.enabled);
+  await rebuildWhitelistRules();
+});
+
+chrome.storage.onChanged.addListener(function (changes, area) {
+  if (area !== "local") return;
+  if (changes.whitelist) rebuildWhitelistRules();
 });
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
@@ -295,10 +363,23 @@ function adTab(tab) {
   return url ? P.isAdUrl(url) : false;
 }
 
+async function openerWhitelisted(openerTabId) {
+  if (openerTabId == null) return false;
+  try {
+    var opener = await chrome.tabs.get(openerTabId);
+    var host = hostFromUrl(opener.url || opener.pendingUrl || "");
+    var cfg = await getCfg();
+    return hostWhitelisted(host, cfg.whitelist);
+  } catch (e) {
+    return false;
+  }
+}
+
 chrome.tabs.onCreated.addListener(async function (tab) {
   if (!adTab(tab)) return;
   var cfg = await getCfg();
   if (!cfg.enabled) return;
+  if (await openerWhitelisted(tab.openerTabId)) return;
   chrome.tabs.remove(tab.id).catch(function () {});
 });
 
@@ -311,6 +392,7 @@ chrome.tabs.onUpdated.addListener(async function (tabId, info, tab) {
   if (!P.isAdUrl(info.url)) return;
   var cfg = await getCfg();
   if (!cfg.enabled) return;
+  if (await openerWhitelisted(tab.openerTabId)) return;
   chrome.tabs.remove(tabId).catch(function () {});
 });
 

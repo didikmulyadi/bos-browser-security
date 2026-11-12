@@ -2,8 +2,10 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `1.3.0`
+- Versi: `1.4.0`
 - Browser: Chrome / Edge 119+
+- Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
+- Lisensi: MIT
 - Tanpa build step, tanpa server, semua proses lokal di browser.
 
 ---
@@ -66,6 +68,13 @@ Catatan:
 - Peringatan terbaru dikelompokkan per severity (Tinggi/Sedang/Rendah), cukup klik item untuk melihat detail.
 - Scrollbar custom (tidak ada scroll horizontal).
 
+### 7. Whitelist domain
+- Kecualikan situs aktif dari pemblokiran dan deteksi tanpa mematikan ekstensi.
+- Tombol **Whitelist domain ini** / **Batalkan whitelist** di popup.
+- Domain dasar disimpan (mis. `example.com`), subdomain ikut dikecualikan.
+- Diterapkan lewat aturan `allow` DNR berprioritas tinggi + content script berhenti memblokir/deteksi untuk situs tersebut.
+- Pengaturan disimpan di `chrome.storage.local` (`whitelist`).
+
 ---
 
 ## Instalasi
@@ -87,6 +96,7 @@ Tidak ada proses build. Semua file dimuat langsung.
 
 - **Toggle kanan atas**: menyalakan/mematikan seluruh proteksi.
 - **Mini toggle di setiap baris pemeriksaan**: mengatur *tangani otomatis* untuk item itu saja.
+- **Whitelist domain ini**: mengecualikan situs aktif; klik **Batalkan whitelist** untuk mengaktifkan lagi.
 - **Muat ulang halaman**: muncul jika content script halaman belum versi terbaru.
 - **Peringatan terbaru**: klik kartu untuk melihat penjelasan, host/detail, waktu, dan status penanganan.
 - **Reset stats / hapus**: membersihkan statistik atau peringatan tab aktif.
@@ -103,13 +113,16 @@ bos-browser-security/
 ├── rules/
 │   └── ads.json                 # 111 rule blokir domain iklan
 ├── icons/                       # ikon 16/32/48/128
+├── docs/                        # situs dokumentasi statis (GitHub Pages)
+├── .github/workflows/pages.yml  # deploy docs ke GitHub Pages
+├── LICENSE                      # MIT
 └── src/
-    ├── background.js            # service worker: DNR, data per tab, badge, tutup tab iklan
+    ├── background.js            # service worker: DNR, data per tab, badge, whitelist, tutup tab iklan
     ├── main/
     │   ├── main-world.js        # hook window.open, Location, blokir redirect
     │   └── security.js          # hook keamanan, analisis script, auto-handle, OneTrust
     ├── content/
-    │   └── isolated.js          # filter kosmetik, frame cleaner, meta refresh, bridge pesan
+    │   └── isolated.js          # filter kosmetik, frame cleaner, meta refresh, bridge pesan, whitelist
     ├── popup/
     │   ├── popup.html
     │   ├── popup.css
@@ -189,7 +202,13 @@ Ekstensi **tidak mengirim data ke mana pun**. Semua deteksi dan penanganan terja
 
 ## Lisensi
 
-Belum ditentukan. Tambahkan file lisensi (mis. MIT) jika ingin dipublikasikan sebagai open source.
+Dirilis di bawah [MIT License](LICENSE). Copyright (c) 2026 didikmulyadi.
+
+## Dokumentasi
+
+- Situs dokumentasi statis: `docs/index.html` dan `docs/docs.html`
+- Deploy otomatis ke GitHub Pages lewat `.github/workflows/pages.yml` (Settings → Pages → Source: GitHub Actions)
+- Alternatif tanpa Actions: Settings → Pages → Deploy from a branch → `main` / `docs`
 
 ---
 

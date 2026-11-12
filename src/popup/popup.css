@@ -190,6 +190,58 @@ header {
   font-size: 14px;
 }
 
+.whitelist {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.wl-text {
+  min-width: 0;
+}
+
+.wl-text strong {
+  display: block;
+  font-size: 11.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wl-text span {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.wl-btn {
+  flex: none;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 5px 9px;
+  font-size: 10.5px;
+  cursor: pointer;
+}
+
+.wl-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.wl-btn.on {
+  background: rgba(240, 68, 56, 0.12);
+  border-color: rgba(240, 68, 56, 0.4);
+  color: #b42318;
+}
+
 .checks {
   margin-top: 12px;
   padding: 10px 11px;

@@ -1,4 +1,4 @@
-var SETTINGS_DEFAULT = { enabled: true };
+var SETTINGS_DEFAULT = { enabled: true, whitelist: [] };
 
 var CHECKS = [
   ["secret_exfil", "Exfiltrasi cookie/token", "Cookie, token, atau localStorage dikirim ke domain lain"],
@@ -102,20 +102,28 @@ var activateEl = document.getElementById("activate");
 var reloadEl = document.getElementById("reloadpage");
 var noteEl = document.getElementById("checknote");
 var alertlistEl = document.getElementById("alertlist");
+var wldomainEl = document.getElementById("wldomain");
+var wltoggleEl = document.getElementById("wltoggle");
 
 var activeTabId = null;
 var lastChecks = null;
 var lastEnabled = true;
 var securityCounts = {};
 var autoHandleMap = __ADG_normalizeAuto(null);
+var currentHost = "";
+var whitelist = [];
+var settingsEnabled = true;
 
 function renderSettings(cfg) {
   var isOn = cfg.enabled !== false;
+  settingsEnabled = isOn;
   toggle.checked = isOn;
   statusEl.textContent = isOn ? "Protection on" : "Protection off";
   statusEl.classList.toggle("off", !isOn);
   netEl.textContent = isOn ? "Active" : "Off";
   autoHandleMap = __ADG_normalizeAuto(cfg.autoHandle);
+  whitelist = Array.isArray(cfg.whitelist) ? cfg.whitelist : [];
+  renderWhitelist();
 }
 
 function renderTabData(data) {
@@ -141,10 +149,10 @@ chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
 
 chrome.storage.onChanged.addListener(function (changes, area) {
   if (area !== "local") return;
-  if (changes.enabled || changes.autoHandle) {
+  if (changes.enabled || changes.autoHandle || changes.whitelist) {
     chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
       renderSettings(cfg);
-      if (changes.enabled) refreshTab();
+      if (changes.enabled || changes.whitelist) refreshTab();
       else if (changes.autoHandle) renderChecks(lastChecks, lastEnabled);
     });
   }
@@ -199,11 +207,15 @@ function refreshTab() {
     var tab = tabs && tabs[0];
     if (!tab || tab.id == null) {
       activeTabId = null;
+      currentHost = "";
+      renderWhitelist();
       renderTabData(null);
       return;
     }
 
     activeTabId = tab.id;
+    currentHost = hostFromUrl(tab.url || "");
+    renderWhitelist();
     chrome.runtime.sendMessage({ type: "adg:getTabData", tabId: tab.id }, function (data) {
       if (chrome.runtime.lastError || !data) {
         renderTabData(null);
@@ -213,6 +225,92 @@ function refreshTab() {
     });
   });
 }
+
+function hostFromUrl(url) {
+  try {
+    var parsed = new URL(url);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return "";
+    return parsed.hostname.toLowerCase();
+  } catch (e) {
+    return "";
+  }
+}
+
+function baseDomain(host) {
+  if (!host) return "";
+  host = host.toLowerCase().replace(/^www\./, "");
+  var multi = [
+    "co.uk",
+    "co.id",
+    "co.jp",
+    "com.au",
+    "com.br",
+    "co.in",
+    "co.kr",
+    "com.tr",
+    "com.cn",
+    "com.mx",
+    "co.nz",
+    "co.za",
+    "com.sg",
+    "com.hk"
+  ];
+  var parts = host.split(".");
+  if (parts.length <= 2) return host;
+  var lastTwo = parts.slice(-2).join(".");
+  if (multi.indexOf(lastTwo) !== -1 && parts.length >= 3) return parts.slice(-3).join(".");
+  return lastTwo;
+}
+
+function hostWhitelisted(host, list) {
+  if (!host) return false;
+  for (var i = 0; i < list.length; i++) {
+    var domain = list[i];
+    if (host === domain || host.endsWith("." + domain)) return true;
+  }
+  return false;
+}
+
+function renderWhitelist() {
+  var host = currentHost;
+  wldomainEl.textContent = host || "\u2014";
+
+  if (!host) {
+    wltoggleEl.hidden = true;
+    netEl.textContent = settingsEnabled ? "Active" : "Off";
+    return;
+  }
+
+  var isWhitelisted = hostWhitelisted(host, whitelist);
+  wltoggleEl.hidden = false;
+  wltoggleEl.textContent = isWhitelisted ? "Batalkan whitelist" : "Whitelist domain ini";
+  wltoggleEl.classList.toggle("on", isWhitelisted);
+  wltoggleEl.title = isWhitelisted
+    ? "Aktifkan kembali proteksi untuk " + host
+    : "Kecualikan " + baseDomain(host) + " dari proteksi";
+  netEl.textContent = !settingsEnabled ? "Off" : isWhitelisted ? "Whitelisted" : "Active";
+}
+
+wltoggleEl.addEventListener("click", function () {
+  if (!currentHost) return;
+
+  var list = whitelist.slice();
+  var removed = false;
+  for (var i = list.length - 1; i >= 0; i--) {
+    var domain = list[i];
+    if (currentHost === domain || currentHost.endsWith("." + domain)) {
+      list.splice(i, 1);
+      removed = true;
+    }
+  }
+  if (!removed) list.push(baseDomain(currentHost));
+
+  whitelist = list;
+  chrome.storage.local.set({ whitelist: list }, function () {
+    renderWhitelist();
+    setTimeout(refreshTab, 200);
+  });
+});
 
 function queryChecksDirect(fallbackEnabled) {
   if (activeTabId == null) {
