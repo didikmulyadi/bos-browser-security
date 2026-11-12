@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bos (Browser Security)</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="shield" aria-hidden="true">B</span>
+        <div class="titles">
+          <h1>Bos</h1>
+          <p>Browser Security &middot; Ads &amp; data theft</p>
+        </div>
+      </div>
+      <label class="switch">
+        <input id="enabled" type="checkbox" />
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <section class="stats">
+      <div class="stat">
+        <span class="num" id="popups">0</span>
+        <span class="label">Popups blocked</span>
+      </div>
+      <div class="stat">
+        <span class="num" id="redirects">0</span>
+        <span class="label">Redirects blocked</span>
+      </div>
+    </section>
+
+    <section class="net">
+      <span>Network ad filter</span>
+      <strong id="netcount">Active</strong>
+    </section>
+
+    <section class="checks">
+      <div class="checks-head">
+        <span>Pemeriksaan keamanan</span>
+        <span id="checksum" class="checksum">&mdash;</span>
+      </div>
+      <ul id="checklist" class="checklist"></ul>
+      <p id="checknote" class="checknote" hidden>
+        Halaman ini dimuat sebelum ekstensi aktif. Muat ulang halaman agar pemeriksaan berjalan.
+      </p>
+      <button id="reloadpage" class="activate" type="button" hidden>Muat ulang halaman</button>
+      <button id="activate" class="activate" type="button" hidden>Aktifkan proteksi</button>
+      <p class="legend">
+        <span class="dot on"></span>aktif
+        <span class="dot off"></span>nonaktif
+        <span class="chk-count">2</span>peringatan
+        <span class="legend-hint">toggle kanan = tangani otomatis</span>
+      </p>
+    </section>
+
+    <section class="alerts">
+      <div class="alerts-head">
+        <span>Peringatan terbaru</span>
+        <button id="clearalerts" type="button" class="linkbtn">hapus</button>
+      </div>
+      <ul id="alertlist" class="alertlist"></ul>
+    </section>
+
+    <footer>
+      <span id="status" class="status">Protection on</span>
+      <button id="reset" type="button">Reset stats</button>
+    </footer>
+
+    <script src="../shared/checks.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

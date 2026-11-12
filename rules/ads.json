@@ -1,0 +1,2777 @@
+[
+    {
+        "id":  1,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||doubleclick.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  2,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||googlesyndication.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  3,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||googleadservices.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  4,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adservice.google.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  5,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||googletagservices.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  6,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adnxs.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  7,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adsrvr.org^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  8,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||rubiconproject.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  9,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||pubmatic.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  10,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||openx.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  11,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||criteo.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  12,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||criteo.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  13,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||taboola.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  14,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||outbrain.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  15,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||mgid.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  16,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||revcontent.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  17,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||zergnet.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  18,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||popads.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  19,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||popcash.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  20,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||propellerads.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  21,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||propellerclick.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  22,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adsterra.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  23,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||exoclick.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  24,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||exosrv.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  25,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||juicyads.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  26,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||trafficjunky.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  27,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||trafficstars.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  28,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||clickadu.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  29,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||onclck.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  30,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adcash.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  31,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||hilltopads.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  32,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||clickaine.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  33,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||bidvertiser.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  34,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||media.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  35,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||contextweb.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  36,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||sovrn.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  37,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||lijit.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  38,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||33across.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  39,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||gumgum.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  40,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||sharethrough.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  41,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||triplelift.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  42,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||smartadserver.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  43,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||teads.tv^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  44,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||spotxchange.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  45,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||districtm.io^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  46,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||yieldmo.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  47,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||indexexchange.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  48,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||casalemedia.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  49,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adform.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  50,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||1rx.io^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  51,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||360yield.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  52,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||tremorhub.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  53,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||beachfront.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  54,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||springserve.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  55,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||aniview.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  56,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||spotx.tv^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  57,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||yieldlab.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  58,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||advertising.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  59,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||amazon-adsystem.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  60,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||ads.yahoo.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  61,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adroll.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  62,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||quantserve.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  63,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||scorecardresearch.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  64,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||moatads.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  65,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adsymptotic.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  66,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||bluekai.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  67,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||demdex.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  68,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||everesttech.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  69,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||krxd.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  70,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||exelator.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  71,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||tapad.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  72,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adcolony.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  73,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||applovin.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  74,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||inmobi.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  75,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||chartboost.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  76,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||vungle.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  77,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||ironsrc.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  78,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||supersonicads.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  79,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||startappservice.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  80,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||hooliredir.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  81,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||storageimagedisplay.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  82,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||profitablecpmrate.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  83,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||highperformanceformat.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  84,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adnium.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  85,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||popmyads.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  86,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||ad-maven.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  87,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||admaven.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  88,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||a-ads.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  89,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||mellowads.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  90,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||cointraffic.io^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  91,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||coinzilla.io^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  92,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adspyglass.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  93,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||trafficfactory.biz^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  94,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||rocoads.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  95,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||tsyndicate.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  96,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adpushup.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  97,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||ezoic.net^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  98,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||ezojs.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  99,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||venatusmedia.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  100,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||nitropay.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  101,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||playwire.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  102,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||raptive.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  103,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||mediavine.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  104,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||freestar.io^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  105,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||monumetric.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  106,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||setupad.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  107,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||snigel.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  108,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||adthrive.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  109,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||bauval.org^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  110,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||pubadx.one^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    },
+    {
+        "id":  111,
+        "priority":  1,
+        "action":  {
+                       "type":  "block"
+                   },
+        "condition":  {
+                          "urlFilter":  "||pubadx.com^",
+                          "resourceTypes":  [
+                                                "main_frame",
+                                                "sub_frame",
+                                                "stylesheet",
+                                                "script",
+                                                "image",
+                                                "font",
+                                                "object",
+                                                "xmlhttprequest",
+                                                "ping",
+                                                "csp_report",
+                                                "media",
+                                                "websocket",
+                                                "other"
+                                            ]
+                      }
+    }
+]
