@@ -28,6 +28,15 @@
 
   if (sandboxBlocksScripts()) return;
 
+  try {
+    if (
+      location.hostname === "challenges.cloudflare.com" ||
+      location.pathname.indexOf("/cdn-cgi/challenge-platform/") === 0
+    ) {
+      return;
+    }
+  } catch (e) {}
+
   var P = globalThis.__ADG_PATTERNS;
   var enabled = true;
   var autoHandle = null;
@@ -95,8 +104,56 @@
     return true;
   }
 
+  var cfChallenge = false;
+
+  function isCloudflareChallenge() {
+    if (cfChallenge) return true;
+    try {
+      if (location.hostname === "challenges.cloudflare.com") {
+        cfChallenge = true;
+        return true;
+      }
+      if (location.pathname.indexOf("/cdn-cgi/") === 0) {
+        cfChallenge = true;
+        return true;
+      }
+      if (window._cf_chl_opt) {
+        cfChallenge = true;
+        return true;
+      }
+      if (
+        /just a moment|attention required|security verification|verifying you are human|checking your browser/i.test(
+          document.title || ""
+        )
+      ) {
+        cfChallenge = true;
+        return true;
+      }
+      if (
+        document.querySelector(
+          'script[src*="challenges.cloudflare.com"], script[src*="/cdn-cgi/challenge-platform/"]'
+        )
+      ) {
+        cfChallenge = true;
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function isChallengeResource(host, url) {
+    if (!host) return false;
+    if (host === "challenges.cloudflare.com" || host.endsWith(".cloudflare.com")) return true;
+    if (host.indexOf("hcaptcha.com") !== -1) return true;
+    var lower = String(url || "").toLowerCase();
+    if (lower.indexOf("recaptcha") !== -1 && (host.indexOf("google.com") !== -1 || host.indexOf("gstatic.com") !== -1)) {
+      return true;
+    }
+    return false;
+  }
+
   function record(kind, severity, detail) {
-    var handled = enabled && autoFor(kind) && severity !== "low";
+    var handled = enabled && !isCloudflareChallenge() && autoFor(kind) && severity !== "low";
     report(kind, severity, detail, handled);
     return handled;
   }
@@ -195,7 +252,7 @@
   }
 
   function inspectRequest(url, body, method) {
-    if (!enabled) return false;
+    if (!enabled || isCloudflareChallenge()) return false;
     try {
       var resolved = resolveUrl(url);
       var host = hostOf(resolved);
@@ -431,7 +488,7 @@
     if (cached) return cached;
 
     var wrapped = function (event) {
-      if (enabled && autoFor("key_listener") && !keyAllowed(event)) {
+      if (enabled && !isCloudflareChallenge() && autoFor("key_listener") && !keyAllowed(event)) {
         report("key_listener", "medium", "ketikan non-navigasi diblokir", true);
         return undefined;
       }
@@ -460,7 +517,7 @@
             "key_listener",
             "medium",
             type + " dibatasi: hanya tombol panah",
-            enabled && autoFor("key_listener")
+            enabled && !isCloudflareChallenge() && autoFor("key_listener")
           );
           return nativeAdd.call(this, type, wrapKeyListener(listener), options);
         }
@@ -577,6 +634,7 @@
     if (src) {
       var lower = src.toLowerCase();
       var host = P ? P.hostOf(src) : "";
+      if (isChallengeResource(host, lower)) return;
       var bad =
         lower.indexOf("data:") === 0 ||
         lower.indexOf("blob:") === 0 ||
@@ -592,9 +650,19 @@
     try {
       text = el.textContent || "";
     } catch (e) {}
+
+    if (
+      text.indexOf("_cf_chl_opt") !== -1 ||
+      text.indexOf("cf_chl") !== -1 ||
+      text.indexOf("challenge-platform") !== -1 ||
+      text.indexOf("cf-browser-verification") !== -1
+    ) {
+      return;
+    }
+
     var verdict = analyzeScript(text);
     if (!verdict) return;
-    var handled = enabled && autoFor("obfuscated_script") && verdict.severity !== "low";
+    var handled = enabled && !isCloudflareChallenge() && autoFor("obfuscated_script") && verdict.severity !== "low";
     report("obfuscated_script", verdict.severity, verdict.reason, handled);
     if (handled) neutralizeScript(el);
   }
@@ -701,7 +769,7 @@
   }
 
   function scanFrames() {
-    if (!enabled || !P) return;
+    if (!enabled || !P || isCloudflareChallenge()) return;
     var frames = document.querySelectorAll("iframe");
     for (var i = 0; i < frames.length; i++) {
       var frame = frames[i];
@@ -712,6 +780,7 @@
       if (!src || src.indexOf("about:") === 0 || src.indexOf("blob:") === 0) continue;
       if (P.sameSite(location.href, src)) continue;
       var host = P.hostOf(src);
+      if (isChallengeResource(host, src)) continue;
       if (iframeOverlay(frame)) {
         if (record("hidden_iframe", "high", "overlay lintas situs " + host)) hideFrame(frame);
       } else if (iframeHidden(frame)) {
@@ -836,7 +905,7 @@
             var payload = bodyToString(message);
             var secret = containsSecret(payload, collectSecrets());
             if (secret || (thirdParty && SENSITIVE_RE.test(payload))) {
-              var handledMsg = autoFor("postmessage_leak");
+              var handledMsg = !isCloudflareChallenge() && autoFor("postmessage_leak");
               report(
                 "postmessage_leak",
                 thirdParty ? "high" : "medium",

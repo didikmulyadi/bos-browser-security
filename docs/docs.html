@@ -67,7 +67,7 @@
         <p>
           Bos (Browser Security) adalah ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan,
           redirect otomatis, popup/tab iklan, sekaligus mendeteksi indikasi pencurian data.
-          Versi <strong>1.8.1</strong>, Chrome/Edge <strong>119+</strong>.
+          Versi <strong>1.8.2</strong>, Chrome/Edge <strong>119+</strong>.
         </p>
 
         <div class="callout">
@@ -249,6 +249,7 @@ docs/</code></pre>
           <li>Script inline yang diinjeksi parser awal bisa sudah dieksekusi sebelum dianalisis. Script dinamis diperiksa sebelum dieksekusi.</li>
           <li>Tangani otomatis bisa merusak fitur situs. Matikan per item bila perlu.</li>
           <li>Frame sandbox tanpa allow-scripts dilewati agar tidak memicu error.</li>
+          <li>Di halaman challenge Cloudflare (mis. "Just a moment..."), auto-handle keamanan dinonaktifkan sementara agar verifikasi bisa selesai. Jika masih gagal, whitelist domain tersebut sementara.</li>
           <li>Data per tab bersifat sesi: hilang saat tab ditutup, navigasi ulang, atau ekstensi di-reload.</li>
           <li>Iklan first-party dari domain situs sendiri tidak selalu terdeteksi.</li>
         </ul>
