@@ -28,6 +28,7 @@
 
   if (sandboxBlocksScripts()) return;
 
+  var postNative = window.postMessage.bind(window);
   var found = Object.create(null);
 
   function add(name, category, version) {
@@ -71,6 +72,10 @@
     return re.test(url);
   }
 
+  function textHas(text, needle) {
+    return text.toLowerCase().indexOf(String(needle).toLowerCase()) !== -1;
+  }
+
   var ASSET_SIGNATURES = [
     { needle: "jquery-ui", name: "jQuery UI", category: "UI library" },
     { needle: "jquery", name: "jQuery", category: "JavaScript library" },
@@ -105,16 +110,64 @@
     { needle: "clarity.ms", name: "Microsoft Clarity", category: "Analytics" },
     { needle: "wp-includes", name: "WordPress", category: "CMS" },
     { needle: "wp-content", name: "WordPress", category: "CMS" },
+    { needle: "woocommerce", name: "WooCommerce", category: "E-commerce" },
+    { needle: "elementor", name: "Elementor", category: "Page builder" },
     { needle: "cdn.shopify.com", name: "Shopify", category: "E-commerce" },
     { needle: "_next/static", name: "Next.js", category: "JavaScript framework" },
     { needle: "_nuxt/", name: "Nuxt", category: "JavaScript framework" },
+    { needle: "gatsby", name: "Gatsby", category: "Static site generator" },
+    { needle: "astro", name: "Astro", category: "Static site generator" },
+    { needle: "remix", name: "Remix", category: "JavaScript framework" },
     { needle: "@vite/client", name: "Vite", category: "Build tool" },
+    { needle: "webpack", name: "Webpack", category: "Build tool" },
     { needle: "prism", name: "Prism.js", category: "Syntax highlighter" },
     { needle: "highlight", name: "Highlight.js", category: "Syntax highlighter" },
     { needle: "leaflet", name: "Leaflet", category: "Maps" },
     { needle: "mapbox-gl", name: "Mapbox GL JS", category: "Maps" },
+    { needle: "chart", name: "Chart.js", category: "Visualization" },
     { needle: "pdfjs", name: "PDF.js", category: "Document" },
-    { needle: "pdf.js", name: "PDF.js", category: "Document" }
+    { needle: "pdf.js", name: "PDF.js", category: "Document" },
+    { needle: "cdnjs", name: "cdnjs", category: "CDN" },
+    { needle: "cloudflare", name: "Cloudflare", category: "CDN" }
+  ];
+
+  var DOM_MARKERS = [
+    { selector: "#__next, script#__NEXT_DATA__", name: "Next.js", category: "JavaScript framework" },
+    { selector: "#__nuxt, [data-n-head], script#__NUXT_DATA__", name: "Nuxt", category: "JavaScript framework" },
+    { selector: "[data-reactroot], [data-reactid], #root[data-reactroot]", name: "React", category: "JavaScript framework" },
+    { selector: "astro-island, [data-astro-cid]", name: "Astro", category: "Static site generator" },
+    { selector: "#___gatsby, [data-gatsby]", name: "Gatsby", category: "Static site generator" },
+    { selector: "[data-v-app], #app[data-v-app]", name: "Vue.js", category: "JavaScript framework" },
+    { selector: "[data-svelte-h], [class*='svelte-']", name: "Svelte", category: "JavaScript framework" },
+    { selector: "link[href*='/wp-content/'], link[href*='/wp-includes/']", name: "WordPress", category: "CMS" },
+    { selector: ".shopify-section, script[src*='cdn.shopify.com']", name: "Shopify", category: "E-commerce" },
+    { selector: "html[data-wf-site], html[data-wf-page]", name: "Webflow", category: "Website builder" },
+    { selector: "script[src*='googletagmanager.com/gtm.js']", name: "Google Tag Manager", category: "Analytics" },
+    { selector: "script[src*='googletagmanager.com/gtag']", name: "Google Analytics", category: "Analytics" },
+    { selector: "img[src*='facebook.com/tr'], script[src*='connect.facebook.net']", name: "Facebook Pixel", category: "Analytics" },
+    { selector: "script[src*='clarity.ms']", name: "Microsoft Clarity", category: "Analytics" },
+    { selector: "link[href*='fonts.googleapis.com']", name: "Google Fonts", category: "Font/Icon" },
+    { selector: "link[href*='font-awesome'], link[href*='fontawesome']", name: "Font Awesome", category: "Font/Icon" },
+    { selector: "script[src*='stripe.com']", name: "Stripe.js", category: "Payments" },
+    { selector: "script[src*='recaptcha']", name: "reCAPTCHA", category: "Security" },
+    { selector: "script[src*='challenges.cloudflare.com']", name: "Cloudflare Turnstile", category: "Security" }
+  ];
+
+  var COOKIE_MARKERS = [
+    { needle: "phpsessid", name: "PHP", category: "Programming language" },
+    { needle: "laravel_session", name: "Laravel", category: "Web framework" },
+    { needle: "wordpress_", name: "WordPress", category: "CMS" },
+    { needle: "wp-settings", name: "WordPress", category: "CMS" },
+    { needle: "_shopify", name: "Shopify", category: "E-commerce" },
+    { needle: "__cf_bm", name: "Cloudflare", category: "CDN" },
+    { needle: "_ga", name: "Google Analytics", category: "Analytics" },
+    { needle: "_gid", name: "Google Analytics", category: "Analytics" },
+    { needle: "asp.net_sessionid", name: "ASP.NET", category: "Web framework" },
+    { needle: "jsessionid", name: "Java", category: "Programming language" },
+    { needle: "csrftoken", name: "Django", category: "Web framework" },
+    { needle: "ci_session", name: "CodeIgniter", category: "Web framework" },
+    { needle: "_rails", name: "Ruby on Rails", category: "Web framework" },
+    { needle: "_session_id", name: "Ruby on Rails", category: "Web framework" }
   ];
 
   function scanGlobals() {
@@ -162,44 +215,142 @@
       if (w.Drupal) add("Drupal", "CMS", cleanVersion(w.Drupal.version));
       if (w.__NEXT_DATA__) add("Next.js", "JavaScript framework", "");
       if (w.__NUXT__ || w.__nuxt) add("Nuxt", "JavaScript framework", "");
+      if (w.__remixContext) add("Remix", "JavaScript framework", "");
+      if (w.___gatsby || w.gatsby) add("Gatsby", "Static site generator", "");
+      if (w.dataLayer) add("Google Tag Manager", "Analytics", "");
+      if (w.gtag) add("Google Analytics", "Analytics", "");
+      if (w.ga) add("Google Analytics", "Analytics", "");
+      if (w.fbq) add("Facebook Pixel", "Analytics", "");
+      if (w.hj) add("Hotjar", "Analytics", "");
+      if (w.clarity) add("Microsoft Clarity", "Analytics", "");
+      if (w.webpackChunk || w.webpackJsonp) add("Webpack", "Build tool", "");
+      if (w.__vite_plugin_react_preamble_installed__) {
+        add("Vite", "Build tool", "");
+        add("React", "JavaScript framework", "");
+      }
       if (w.wp && w.wp.version) add("WordPress", "CMS", cleanVersion(w.wp.version));
     });
   }
 
-  function scanAssets() {
+  function scanUrls() {
     var nodes = document.querySelectorAll("script[src], link[href]");
     for (var i = 0; i < nodes.length; i++) {
       var url = nodes[i].src || nodes[i].href || "";
       if (!url) continue;
       for (var j = 0; j < ASSET_SIGNATURES.length; j++) {
         var sig = ASSET_SIGNATURES[j];
-        if (!urlMatches(url, sig.needle)) continue;
-        var version = versionFromUrl(url);
-        add(sig.name, sig.category, version);
+        if (urlMatches(url, sig.needle)) add(sig.name, sig.category, versionFromUrl(url));
+      }
+    }
+
+    try {
+      var entries = performance.getEntriesByType("resource");
+      for (var k = 0; k < entries.length; k++) {
+        var resource = entries[k].name || "";
+        if (!resource) continue;
+        for (var m = 0; m < ASSET_SIGNATURES.length; m++) {
+          var rsig = ASSET_SIGNATURES[m];
+          if (urlMatches(resource, rsig.needle)) add(rsig.name, rsig.category, versionFromUrl(resource));
+        }
+      }
+    } catch (e) {}
+  }
+
+  function scanDom() {
+    for (var i = 0; i < DOM_MARKERS.length; i++) {
+      var marker = DOM_MARKERS[i];
+      try {
+        if (document.querySelector(marker.selector)) add(marker.name, marker.category, "");
+      } catch (e) {}
+    }
+    try {
+      var ng = document.querySelector("[ng-version]");
+      if (ng) add("Angular", "JavaScript framework", cleanVersion(ng.getAttribute("ng-version")));
+    } catch (e) {}
+  }
+
+  function scanCookies() {
+    var cookie = "";
+    try {
+      cookie = document.cookie || "";
+    } catch (e) {}
+    if (!cookie) return;
+    var names = cookie.split(";").map(function (pair) {
+      var index = pair.indexOf("=");
+      return (index >= 0 ? pair.slice(0, index) : pair).trim().toLowerCase();
+    });
+    for (var i = 0; i < COOKIE_MARKERS.length; i++) {
+      var marker = COOKIE_MARKERS[i];
+      for (var j = 0; j < names.length; j++) {
+        if (names[j].indexOf(marker.needle) !== -1) {
+          add(marker.name, marker.category, "");
+          break;
+        }
       }
     }
   }
 
-  function scanMeta() {
-    var metas = document.querySelectorAll('meta[name="generator"]');
+  function scanInlineScripts() {
+    var scripts = document.querySelectorAll("script:not([src])");
+    var text = "";
+    for (var i = 0; i < scripts.length; i++) {
+      text += (scripts[i].textContent || "").slice(0, 50000);
+      if (text.length > 300000) break;
+    }
+    if (!text) return;
+
     var patterns = [
-      [/WordPress\s+([\d.]+)/i, "WordPress", "CMS"],
-      [/Drupal\s+([\d.]+)/i, "Drupal", "CMS"],
-      [/Joomla!?(?:\s+([\d.]+))?/i, "Joomla", "CMS"],
-      [/Ghost\s+([\d.]+)/i, "Ghost", "CMS"],
-      [/TYPO3\s+([\d.]+)/i, "TYPO3", "CMS"],
-      [/Shopify/i, "Shopify", "E-commerce"],
-      [/Wix\.com/i, "Wix", "Website builder"],
-      [/Squarespace/i, "Squarespace", "Website builder"],
-      [/Hugo\s+([\d.]+)/i, "Hugo", "Static site generator"],
-      [/Gatsby/i, "Gatsby", "Static site generator"]
+      ["__NEXT_DATA__", "Next.js", "JavaScript framework"],
+      ["__NUXT__", "Nuxt", "JavaScript framework"],
+      ["__remixContext", "Remix", "JavaScript framework"],
+      ["___gatsby", "Gatsby", "Static site generator"],
+      ["webpackChunk", "Webpack", "Build tool"],
+      ["webpackJsonp", "Webpack", "Build tool"],
+      ["wp-content", "WordPress", "CMS"],
+      ["Shopify", "Shopify", "E-commerce"],
+      ["googletagmanager", "Google Tag Manager", "Analytics"],
+      ["gtag(", "Google Analytics", "Analytics"],
+      ["dataLayer", "Google Tag Manager", "Analytics"],
+      ["clarity.ms", "Microsoft Clarity", "Analytics"],
+      ["hotjar", "Hotjar", "Analytics"],
+      ["fbq(", "Facebook Pixel", "Analytics"],
+      ["astro-island", "Astro", "Static site generator"],
+      ["data-v-app", "Vue.js", "JavaScript framework"],
+      ["ng-version", "Angular", "JavaScript framework"]
     ];
-    for (var i = 0; i < metas.length; i++) {
-      var content = metas[i].getAttribute("content") || "";
-      for (var j = 0; j < patterns.length; j++) {
-        var match = patterns[j][0].exec(content);
-        if (!match) continue;
-        add(patterns[j][1], patterns[j][2], cleanVersion(match[1]));
+
+    for (var p = 0; p < patterns.length; p++) {
+      if (textHas(text, patterns[p][0])) add(patterns[p][1], patterns[p][2], "");
+    }
+  }
+
+  var IMPLIES = {
+    woocommerce: [["WordPress", "CMS"]],
+    elementor: [["WordPress", "CMS"]],
+    "next.js": [
+      ["React", "JavaScript framework"],
+      ["Node.js", "Runtime"]
+    ],
+    nuxt: [
+      ["Vue.js", "JavaScript framework"],
+      ["Node.js", "Runtime"]
+    ],
+    gatsby: [["React", "JavaScript framework"]],
+    remix: [["React", "JavaScript framework"]],
+    laravel: [["PHP", "Programming language"]],
+    codeigniter: [["PHP", "Programming language"]],
+    django: [["Python", "Programming language"]],
+    "ruby on rails": [["Ruby", "Programming language"]],
+    "asp.net": [[".NET", "Programming language"]]
+  };
+
+  function applyImplies() {
+    var keys = Object.keys(IMPLIES);
+    for (var i = 0; i < keys.length; i++) {
+      if (!found[keys[i]]) continue;
+      var targets = IMPLIES[keys[i]];
+      for (var j = 0; j < targets.length; j++) {
+        add(targets[j][0], targets[j][1], "");
       }
     }
   }
@@ -213,15 +364,25 @@
       if (cat !== 0) return cat;
       return a.name.localeCompare(b.name);
     });
+
     try {
-      window.postMessage({ __adgTech: 1, techs: list }, "*");
+      if (document.documentElement) {
+        document.documentElement.setAttribute("data-adg-tech", JSON.stringify(list));
+      }
+    } catch (e) {}
+
+    try {
+      postNative({ __adgTech: 1, techs: list }, "*");
     } catch (e) {}
   }
 
   function run() {
     scanGlobals();
-    scanAssets();
-    scanMeta();
+    scanUrls();
+    scanDom();
+    scanCookies();
+    scanInlineScripts();
+    applyImplies();
     report();
   }
 

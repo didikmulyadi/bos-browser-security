@@ -440,6 +440,15 @@
     }, ms);
   });
 
+  [400, 1200, 3000, 6000, 9000].forEach(function (ms) {
+    setTimeout(function () {
+      try {
+        var raw = document.documentElement && document.documentElement.getAttribute("data-adg-tech");
+        if (raw) send({ type: "adg:tech", techs: JSON.parse(raw) });
+      } catch (e) {}
+    }, ms);
+  });
+
   window.addEventListener("message", function (event) {
     if (event.source !== window) return;
     var data = event.data;

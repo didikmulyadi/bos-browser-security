@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `1.5.0`
+- Versi: `1.6.0`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -76,10 +76,12 @@ Catatan:
 - Pengaturan disimpan di `chrome.storage.local` (`whitelist`).
 
 ### 8. Technology profiler
-- Mendeteksi library, framework, dan package yang dipakai halaman beserta versinya bila tersedia.
-- Sumber deteksi: global `window` (mis. `React.version`, `jQuery.fn.jquery`, `Vue.version`), URL asset (`@version`, `jquery-3.6.0.min.js`, `?ver=`), dan `meta[name=generator]` (WordPress, Drupal, dll).
-- Contoh: jQuery, React, React DOM, Vue.js, Angular, Alpine.js, Svelte, Bootstrap, Lodash, Moment.js, D3.js, GSAP, Three.js, Swiper, Axios, htmx, Sentry, Stripe.js, Next.js, Nuxt, WordPress, Google Analytics, Google Tag Manager.
-- Ditampilkan per tab di popup (nama + badge versi). Versi bersifat best-effort; library yang dibundel tanpa penanda versi akan tampil tanpa versi.
+- Mendeteksi library, framework, package, CMS, analytics, dan CDN yang dipakai halaman beserta versinya bila tersedia.
+- Multi-sinyal (mengikuti pendekatan Wappalyzer): global `window`, DOM selector, URL `script`/`link`, `performance` resource entries, cookie, `meta[name=generator]`, dan isi inline script.
+- Implikasi umum: WooCommerce/Elementor → WordPress, Next.js/Gatsby/Remix → React, Nuxt → Vue.js, Laravel/CodeIgniter → PHP, Django → Python.
+- Versi diambil dari global (mis. `React.version`, `jQuery.fn.jquery`), atribut (`ng-version`), atau pola URL (`jquery-3.6.0.min.js`, `@5.3.2`, `?ver=`).
+- Ditampilkan per tab di popup (nama + badge versi). Versi bersifat best-effort.
+- Deteksi header HTTP (mis. `Server`, `X-Powered-By`) belum disertakan karena memerlukan permission `webRequest` tambahan.
 
 ---
 

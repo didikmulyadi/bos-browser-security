@@ -136,7 +136,7 @@ function renderTabData(data) {
   popupsEl.textContent = stats.popups || 0;
   redirectsEl.textContent = stats.redirects || 0;
   renderAlerts(security.events);
-  renderTech(data && data.tech);
+  renderTech(data && data.tech, !!(data && data.checks));
 
   if (data && data.checks) {
     renderChecks(data.checks, data.checksEnabled !== false);
@@ -423,7 +423,7 @@ function makeAutoToggle(kind, checked) {
   return label;
 }
 
-function renderTech(techs) {
+function renderTech(techs, reachable) {
   techlistEl.textContent = "";
   var list = (techs || []).slice().sort(function (a, b) {
     var cat = (a.category || "").localeCompare(b.category || "");
@@ -436,7 +436,9 @@ function renderTech(techs) {
   if (!list.length) {
     var empty = document.createElement("li");
     empty.className = "tech-empty";
-    empty.textContent = "Belum ada teknologi terdeteksi.";
+    empty.textContent = reachable
+      ? "Belum ada teknologi terdeteksi."
+      : "Muat ulang halaman agar profiler berjalan.";
     techlistEl.appendChild(empty);
     return;
   }
