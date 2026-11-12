@@ -460,6 +460,10 @@
       });
       return;
     }
+    if (data && data.__adgTech === 1) {
+      send({ type: "adg:tech", techs: data.techs || [] });
+      return;
+    }
     if (!data || data.__adg !== 1) return;
     if (!enabled) return;
     report(data.kind, data.detail);

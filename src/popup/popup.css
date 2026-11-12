@@ -242,6 +242,71 @@ header {
   color: #b42318;
 }
 
+.tech {
+  margin-top: 12px;
+  padding: 10px 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.tech-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.tech-head strong {
+  color: var(--text);
+  font-size: 11px;
+}
+
+.techlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 2px;
+}
+
+.techlist li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 11px;
+}
+
+.tech-name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tech-ver {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  font-size: 9.5px;
+  color: var(--muted);
+}
+
+.tech-empty {
+  padding: 2px 0;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
 .checks {
   margin-top: 12px;
   padding: 10px 11px;

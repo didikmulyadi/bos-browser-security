@@ -56,6 +56,10 @@ function checksKey(tabId) {
   return "checks_" + tabId;
 }
 
+function techKey(tabId) {
+  return "tech_" + tabId;
+}
+
 function emptyStats() {
   return { popups: 0, redirects: 0 };
 }
@@ -168,7 +172,7 @@ async function recordSecurity(tabId, event) {
 
 async function clearTabData(tabId) {
   if (tabId == null) return;
-  await storageRemove("session", [statsKey(tabId), securityKey(tabId), checksKey(tabId)]);
+  await storageRemove("session", [statsKey(tabId), securityKey(tabId), checksKey(tabId), techKey(tabId)]);
   try {
     chrome.action.setBadgeText({ tabId: tabId, text: "" });
   } catch (e) {}
@@ -178,7 +182,12 @@ async function getTabData(tabId) {
   if (tabId == null) return null;
   var data = {};
   try {
-    data = await storageGet("session", [statsKey(tabId), securityKey(tabId), checksKey(tabId)]);
+    data = await storageGet("session", [
+      statsKey(tabId),
+      securityKey(tabId),
+      checksKey(tabId),
+      techKey(tabId)
+    ]);
   } catch (e) {
     data = {};
   }
@@ -187,7 +196,8 @@ async function getTabData(tabId) {
     stats: data[statsKey(tabId)] || emptyStats(),
     security: data[securityKey(tabId)] || emptySecurity(),
     checks: checksEntry ? checksEntry.checks : null,
-    checksEnabled: checksEntry ? checksEntry.enabled !== false : true
+    checksEnabled: checksEntry ? checksEntry.enabled !== false : true,
+    tech: data[techKey(tabId)] || []
   };
 }
 
@@ -286,6 +296,15 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         time: Date.now()
       };
       storageSet("session", checksPayload);
+    }
+    return;
+  }
+
+  if (message.type === "adg:tech") {
+    if (tabId != null && Array.isArray(message.techs)) {
+      var techPayload = {};
+      techPayload[techKey(tabId)] = message.techs.slice(0, 200);
+      storageSet("session", techPayload);
     }
     return;
   }

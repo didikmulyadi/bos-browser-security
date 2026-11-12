@@ -42,6 +42,7 @@
           <li><a href="#instalasi">Instalasi</a></li>
           <li><a href="#penggunaan">Penggunaan</a></li>
           <li><a href="#whitelist">Whitelist domain</a></li>
+          <li><a href="#teknologi">Technology profiler</a></li>
         </ul>
         <h4>Keamanan</h4>
         <ul>
@@ -66,7 +67,7 @@
         <p>
           Bos (Browser Security) adalah ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan,
           redirect otomatis, popup/tab iklan, sekaligus mendeteksi indikasi pencurian data.
-          Versi <strong>1.4.0</strong>, Chrome/Edge <strong>119+</strong>.
+          Versi <strong>1.5.0</strong>, Chrome/Edge <strong>119+</strong>.
         </p>
 
         <div class="callout">
@@ -123,6 +124,21 @@
           Whitelist mengizinkan request jaringan dari situs itu. Hanya tambahkan domain yang
           benar-benar dipercaya.
         </div>
+
+        <h2 id="teknologi">Technology profiler</h2>
+        <p>
+          Bos mendeteksi library, framework, dan package yang dipakai halaman beserta versinya bila
+          tersedia. Hasil ditampilkan per tab di popup.
+        </p>
+        <ul>
+          <li><strong>Global window</strong>: <code>React.version</code>, <code>jQuery.fn.jquery</code>, <code>Vue.version</code>, <code>angular.version.full</code>, <code>_.VERSION</code>, dan lainnya.</li>
+          <li><strong>URL asset</strong>: pola <code>@version</code>, nama file seperti <code>jquery-3.6.0.min.js</code>, atau query <code>?ver=</code>.</li>
+          <li><strong>Meta generator</strong>: WordPress, Drupal, Joomla, Ghost, TYPO3, Hugo, dan sejenisnya.</li>
+        </ul>
+        <p>
+          Versi bersifat best-effort. Library yang dibundel tanpa penanda versi akan tampil tanpa
+          badge versi. Deteksi berjalan pasif dan tidak mengubah halaman.
+        </p>
 
         <h2 id="pemeriksaan">Pemeriksaan keamanan</h2>
         <p>17 pemeriksaan, masing-masing punya toggle tangani otomatis sendiri (default aktif).</p>

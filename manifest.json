@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Bos (Browser Security)",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Bos (Browser Security): blocks ads, redirects, popups, and detects data theft.",
   "minimum_chrome_version": "119",
   "permissions": [
@@ -25,7 +25,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["src/shared/patterns.js", "src/main/main-world.js", "src/main/security.js"],
+      "js": ["src/shared/patterns.js", "src/main/main-world.js", "src/main/security.js", "src/main/tech.js"],
       "run_at": "document_start",
       "all_frames": true,
       "match_about_blank": true,

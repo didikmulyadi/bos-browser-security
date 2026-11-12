@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `1.4.0`
+- Versi: `1.5.0`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -75,6 +75,12 @@ Catatan:
 - Diterapkan lewat aturan `allow` DNR berprioritas tinggi + content script berhenti memblokir/deteksi untuk situs tersebut.
 - Pengaturan disimpan di `chrome.storage.local` (`whitelist`).
 
+### 8. Technology profiler
+- Mendeteksi library, framework, dan package yang dipakai halaman beserta versinya bila tersedia.
+- Sumber deteksi: global `window` (mis. `React.version`, `jQuery.fn.jquery`, `Vue.version`), URL asset (`@version`, `jquery-3.6.0.min.js`, `?ver=`), dan `meta[name=generator]` (WordPress, Drupal, dll).
+- Contoh: jQuery, React, React DOM, Vue.js, Angular, Alpine.js, Svelte, Bootstrap, Lodash, Moment.js, D3.js, GSAP, Three.js, Swiper, Axios, htmx, Sentry, Stripe.js, Next.js, Nuxt, WordPress, Google Analytics, Google Tag Manager.
+- Ditampilkan per tab di popup (nama + badge versi). Versi bersifat best-effort; library yang dibundel tanpa penanda versi akan tampil tanpa versi.
+
 ---
 
 ## Instalasi
@@ -120,7 +126,8 @@ bos-browser-security/
     ├── background.js            # service worker: DNR, data per tab, badge, whitelist, tutup tab iklan
     ├── main/
     │   ├── main-world.js        # hook window.open, Location, blokir redirect
-    │   └── security.js          # hook keamanan, analisis script, auto-handle, OneTrust
+    │   ├── security.js          # hook keamanan, analisis script, auto-handle, OneTrust
+    │   └── tech.js              # technology profiler (framework/library + versi)
     ├── content/
     │   └── isolated.js          # filter kosmetik, frame cleaner, meta refresh, bridge pesan, whitelist
     ├── popup/

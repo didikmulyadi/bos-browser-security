@@ -104,6 +104,8 @@ var noteEl = document.getElementById("checknote");
 var alertlistEl = document.getElementById("alertlist");
 var wldomainEl = document.getElementById("wldomain");
 var wltoggleEl = document.getElementById("wltoggle");
+var techlistEl = document.getElementById("techlist");
+var techcountEl = document.getElementById("techcount");
 
 var activeTabId = null;
 var lastChecks = null;
@@ -134,6 +136,7 @@ function renderTabData(data) {
   popupsEl.textContent = stats.popups || 0;
   redirectsEl.textContent = stats.redirects || 0;
   renderAlerts(security.events);
+  renderTech(data && data.tech);
 
   if (data && data.checks) {
     renderChecks(data.checks, data.checksEnabled !== false);
@@ -418,6 +421,45 @@ function makeAutoToggle(kind, checked) {
   label.appendChild(input);
   label.appendChild(track);
   return label;
+}
+
+function renderTech(techs) {
+  techlistEl.textContent = "";
+  var list = (techs || []).slice().sort(function (a, b) {
+    var cat = (a.category || "").localeCompare(b.category || "");
+    if (cat !== 0) return cat;
+    return (a.name || "").localeCompare(b.name || "");
+  });
+
+  techcountEl.textContent = String(list.length);
+
+  if (!list.length) {
+    var empty = document.createElement("li");
+    empty.className = "tech-empty";
+    empty.textContent = "Belum ada teknologi terdeteksi.";
+    techlistEl.appendChild(empty);
+    return;
+  }
+
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var li = document.createElement("li");
+    li.title = (item.category ? item.category + " \u00b7 " : "") + (item.name || "");
+
+    var name = document.createElement("span");
+    name.className = "tech-name";
+    name.textContent = item.name || "Unknown";
+    li.appendChild(name);
+
+    if (item.version) {
+      var version = document.createElement("span");
+      version.className = "tech-ver";
+      version.textContent = item.version;
+      li.appendChild(version);
+    }
+
+    techlistEl.appendChild(li);
+  }
 }
 
 function renderAlerts(events) {
