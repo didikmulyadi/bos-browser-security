@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `1.8.3`
+- Versi: `1.8.4`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -186,6 +186,15 @@ Ekstensi **tidak mengirim data ke mana pun**. Semua deteksi dan penanganan terja
 - Frame yang di-sandbox tanpa `allow-scripts` sengaja dilewati agar tidak memicu error.
 - Di halaman challenge Cloudflare ("Just a moment..."/security verification), auto-handle keamanan dinonaktifkan sementara agar verifikasi bisa selesai. Jika masih gagal, whitelist domain tersebut sementara.
 - Data per tab bersifat sesi: hilang saat tab ditutup, halaman dinavigasi ulang, atau ekstensi di-reload.
+
+### Challenge Cloudflare (`Just a moment...`)
+Jika verifikasi berputar terus dan Network menampilkan `401` pada `/cdn-cgi/challenge-platform/.../pat/`:
+- Itu respons dari Cloudflare, bukan pemblokiran ekstensi. Domain challenge (`cloudflare.com`, `cloudflareinsights.com`, `hcaptcha.com`, `recaptcha.net`, `gstatic.com`) sudah di-*allow* di `rules/allow.json` dan bypass di hooks.
+- Reload paksa (`Ctrl+Shift+R`), lalu bersihkan cookie/site data situs.
+- Izinkan cookie pihak ketiga untuk `challenges.cloudflare.com` (atau matikan blokir cookie pihak ketiga untuk situs itu sementara).
+- Coba **Whitelist domain ini** atau nonaktifkan ekstensi sebentar untuk memastikan penyebabnya.
+- Pastikan jam sistem benar dan tidak memakai VPN/proxy mencurigakan.
+- Ekstensi tidak mencoba melewati verifikasi Cloudflare.
 - Tidak memblokir iklan yang disajikan langsung dari domain situs (first-party) tanpa indikator tambahan.
 
 ---

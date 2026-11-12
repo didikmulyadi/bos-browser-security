@@ -31,6 +31,7 @@
   try {
     if (
       location.hostname === "challenges.cloudflare.com" ||
+      location.hostname.endsWith(".challenges.cloudflare.com") ||
       location.pathname.indexOf("/cdn-cgi/challenge-platform/") === 0
     ) {
       return;
@@ -110,6 +111,10 @@
     if (cfChallenge) return true;
     try {
       if (location.hostname === "challenges.cloudflare.com") {
+        cfChallenge = true;
+        return true;
+      }
+      if (location.hostname.endsWith(".challenges.cloudflare.com")) {
         cfChallenge = true;
         return true;
       }
@@ -257,6 +262,7 @@
       var resolved = resolveUrl(url);
       var host = hostOf(resolved);
       if (!host) return false;
+      if (isChallengeResource(host, resolved)) return false;
       if (!isThirdParty(resolved)) return false;
 
       var bodyText = bodyToString(body);
@@ -903,8 +909,9 @@
           if (target && !isStar && P) thirdParty = !P.sameSite(location.href, target);
           if (isStar || thirdParty) {
             var payload = bodyToString(message);
+            var challengePayload = /cf[-_]chl|challenge-platform|turnstile|hcaptcha|recaptcha/i.test(payload);
             var secret = containsSecret(payload, collectSecrets());
-            if (secret || (thirdParty && SENSITIVE_RE.test(payload))) {
+            if (!challengePayload && (secret || (thirdParty && SENSITIVE_RE.test(payload)))) {
               var handledMsg = !isCloudflareChallenge() && autoFor("postmessage_leak");
               report(
                 "postmessage_leak",
