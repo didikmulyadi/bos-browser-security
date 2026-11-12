@@ -184,6 +184,7 @@ Ekstensi **tidak mengirim data ke mana pun**. Semua deteksi dan penanganan terja
 - Script inline yang diinjeksi parser awal bisa sudah sempat dieksekusi sebelum dianalisis. Script yang disisipkan dinamis (`appendChild`/`insertBefore`/`append`) diperiksa dan di-*neutralize* sebelum dieksekusi.
 - Auto-handle berpotensi merusak fitur situs (clipboard, geolocation, passkey, dsb). Default aktif; matikan per item jika perlu.
 - Frame yang di-sandbox tanpa `allow-scripts` sengaja dilewati agar tidak memicu error.
+- Di halaman challenge Cloudflare ("Just a moment..."/security verification), auto-handle keamanan dinonaktifkan sementara agar verifikasi bisa selesai. Jika masih gagal, whitelist domain tersebut sementara.
 - Data per tab bersifat sesi: hilang saat tab ditutup, halaman dinavigasi ulang, atau ekstensi di-reload.
 - Tidak memblokir iklan yang disajikan langsung dari domain situs (first-party) tanpa indikator tambahan.
 
