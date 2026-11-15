@@ -701,14 +701,19 @@
       if (!anchor) return;
 
       if (siteBlockNewTabs()) {
-        if (event.ctrlKey || event.metaKey) {
+        var target = anchor.getAttribute("target");
+        var newTabIntent =
+          (target && target.toLowerCase() !== "_self") ||
+          event.ctrlKey ||
+          event.metaKey ||
+          event.button === 1;
+        if (newTabIntent) {
           event.preventDefault();
           event.stopImmediatePropagation();
+          try {
+            location.href = "https://google.com";
+          } catch (e) {}
           return;
-        }
-        var target = anchor.getAttribute("target");
-        if (target && target.toLowerCase() !== "_self") {
-          anchor.removeAttribute("target");
         }
       }
 
@@ -729,6 +734,9 @@
       if (event.button === 1) {
         event.preventDefault();
         event.stopImmediatePropagation();
+        try {
+          location.href = "https://google.com";
+        } catch (e) {}
       }
     },
     true
@@ -742,7 +750,11 @@
       if (!form || form.tagName !== "FORM") return;
       var target = form.getAttribute("target");
       if (target && target.toLowerCase() !== "_self") {
-        form.removeAttribute("target");
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        try {
+          location.href = "https://google.com";
+        } catch (e) {}
       }
     },
     true

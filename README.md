@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `2.3.0`
+- Versi: `2.3.1`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -106,7 +106,7 @@ Catatan:
 
 ### 12. Blokir tab baru per situs
 - Toggle **Blokir tab baru** di popup (per domain, default off).
-- Klik `target="_blank"`, ctrl/middle-click, dan `window.open` dicegah; link tetap dapat dibuka di tab yang sama.
+- Klik `target="_blank"`, ctrl/middle-click, dan `window.open` dicegah lalu diarahkan ke `https://google.com` di tab yang sama.
 - Tab baru yang tetap terbuka dari situs tersebut ditutup otomatis oleh background.
 - Menghormati jeda proteksi/whitelist situs.
 

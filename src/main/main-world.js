@@ -63,6 +63,11 @@
       var target = url == null ? "" : String(url);
       if (blockNewTabs) {
         report("popup", target || "blocked-new-tab");
+        if (hasUserActivation()) {
+          try {
+            location.href = "https://google.com";
+          } catch (e) {}
+        }
         return null;
       }
       if (P.isAdUrl(target, location.href)) {
