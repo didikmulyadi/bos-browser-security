@@ -497,6 +497,12 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     return;
   }
 
+  if (message.type === "adg:openTab") {
+    chrome.tabs.create({ url: "https://google.com", active: true }).catch(function () {});
+    sendResponse({ ok: true });
+    return true;
+  }
+
   if (message.type === "adg:getTabData") {
     getTabData(message.tabId).then(function (data) {
       sendResponse(data);

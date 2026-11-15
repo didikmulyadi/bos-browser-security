@@ -57,19 +57,30 @@
     }
   });
 
+  function shouldBlockNewTabs() {
+    if (blockNewTabs) return true;
+    try {
+      return document.documentElement.getAttribute("data-adg-block-new-tabs") === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
   var nativeOpen = window.open;
   window.open = function (url, name, features) {
-    if (enabled) {
-      var target = url == null ? "" : String(url);
-      if (blockNewTabs) {
-        report("popup", target || "blocked-new-tab");
-        if (hasUserActivation()) {
-          try {
-            return nativeOpen.call(window, "https://google.com", "_blank");
-          } catch (e) {}
-        }
-        return null;
+    var target = url == null ? "" : String(url);
+
+    if (shouldBlockNewTabs()) {
+      report("popup", target || "blocked-new-tab");
+      if (hasUserActivation()) {
+        try {
+          window.postMessage({ __adgOpenTab: 1 }, "*");
+        } catch (e) {}
       }
+      return null;
+    }
+
+    if (enabled) {
       if (P.isAdUrl(target, location.href)) {
         report("popup", target);
         return null;
