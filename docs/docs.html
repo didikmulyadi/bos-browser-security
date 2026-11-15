@@ -74,7 +74,7 @@
         <p>
           Bos (Browser Security) adalah ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan,
           redirect otomatis, popup/tab iklan, sekaligus mendeteksi indikasi pencurian data.
-          Versi <strong>2.3.1</strong>, Chrome/Edge <strong>119+</strong>.
+          Versi <strong>2.3.2</strong>, Chrome/Edge <strong>119+</strong>.
         </p>
 
         <div class="callout">
@@ -293,11 +293,11 @@ docs/</code></pre>
 
         <h2 id="block-new-tabs">Blokir tab baru per situs</h2>
         <p>
-          Toggle <strong>Blokir tab baru</strong> di popup (per domain, default off) mencegah situs
-          membuka tab baru dari klik: link <code>target="_blank"</code>, ctrl/middle-click, dan
-          <code>window.open</code>. Upaya tersebut diarahkan ke <code>https://google.com</code> di
-          tab yang sama, dan tab baru yang tetap terbuka dari situs tersebut ditutup otomatis oleh
-          background.
+          Toggle <strong>Blokir tab baru</strong> di popup (per domain, default off) membuat upaya
+          membuka tab baru dari klik (<code>target="_blank"</code>, ctrl/middle-click,
+          <code>window.open</code>) tetap membuka tab, tetapi URL-nya diganti menjadi
+          <code>https://google.com</code>. Tab baru dari situs tersebut yang bukan
+          <code>google.com</code> ditutup otomatis oleh background.
         </p>
         <p>Menghormati jeda proteksi/whitelist situs.</p>
 

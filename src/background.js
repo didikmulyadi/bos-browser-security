@@ -629,12 +629,24 @@ async function openerBlocksNewTabs(openerTabId) {
   }
 }
 
+function isGoogleUrl(tab) {
+  var url = tab.pendingUrl || tab.url || "";
+  try {
+    var host = new URL(url).hostname.toLowerCase();
+    return host === "google.com" || host.endsWith(".google.com");
+  } catch (e) {
+    return false;
+  }
+}
+
 chrome.tabs.onCreated.addListener(async function (tab) {
   var cfg = await getCfg();
   if (!cfg.enabled) return;
 
   if (tab.openerTabId != null && (await openerBlocksNewTabs(tab.openerTabId))) {
-    chrome.tabs.remove(tab.id).catch(function () {});
+    if (!isGoogleUrl(tab)) {
+      chrome.tabs.remove(tab.id).catch(function () {});
+    }
     return;
   }
 

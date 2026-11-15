@@ -65,7 +65,7 @@
         report("popup", target || "blocked-new-tab");
         if (hasUserActivation()) {
           try {
-            location.href = "https://google.com";
+            return nativeOpen.call(window, "https://google.com", "_blank");
           } catch (e) {}
         }
         return null;

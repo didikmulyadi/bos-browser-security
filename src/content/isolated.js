@@ -692,6 +692,12 @@
     report(data.kind, data.detail);
   });
 
+  function openReplacementTab() {
+    try {
+      window.open("https://google.com", "_blank");
+    } catch (e) {}
+  }
+
   document.addEventListener(
     "click",
     function (event) {
@@ -710,9 +716,7 @@
         if (newTabIntent) {
           event.preventDefault();
           event.stopImmediatePropagation();
-          try {
-            location.href = "https://google.com";
-          } catch (e) {}
+          openReplacementTab();
           return;
         }
       }
@@ -734,9 +738,7 @@
       if (event.button === 1) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        try {
-          location.href = "https://google.com";
-        } catch (e) {}
+        openReplacementTab();
       }
     },
     true
@@ -752,9 +754,7 @@
       if (target && target.toLowerCase() !== "_self") {
         event.preventDefault();
         event.stopImmediatePropagation();
-        try {
-          location.href = "https://google.com";
-        } catch (e) {}
+        openReplacementTab();
       }
     },
     true
