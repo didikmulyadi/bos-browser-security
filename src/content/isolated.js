@@ -386,10 +386,27 @@
   function broadcastConfig() {
     try {
       window.postMessage(
-        { __adgCfg: 1, enabled: enabled, autoHandle: autoHandle, youtubeAds: youtubeAds },
+        {
+          __adgCfg: 1,
+          enabled: enabled,
+          autoHandle: autoHandle,
+          youtubeAds: youtubeAds,
+          blockNewTabs: siteBlockNewTabs()
+        },
         "*"
       );
     } catch (e) {}
+  }
+
+  function siteBlockNewTabs() {
+    try {
+      var host = location.hostname.toLowerCase();
+      var base = P && P.baseDomain ? P.baseDomain(host) : host;
+      var site = siteConfig[base];
+      return !!(site && site.blockNewTabs === true);
+    } catch (e) {
+      return false;
+    }
   }
 
   function injectCosmetic() {
@@ -682,11 +699,50 @@
       var node = event.target;
       var anchor = node && node.closest ? node.closest("a[href]") : null;
       if (!anchor) return;
+
+      if (siteBlockNewTabs()) {
+        if (event.ctrlKey || event.metaKey) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          return;
+        }
+        var target = anchor.getAttribute("target");
+        if (target && target.toLowerCase() !== "_self") {
+          anchor.removeAttribute("target");
+        }
+      }
+
       var href = anchor.href;
       if (P && P.isAdUrl(href, location.href)) {
         event.preventDefault();
         event.stopImmediatePropagation();
         report("popup", "click:" + href);
+      }
+    },
+    true
+  );
+
+  document.addEventListener(
+    "auxclick",
+    function (event) {
+      if (!enabled || !siteBlockNewTabs()) return;
+      if (event.button === 1) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    },
+    true
+  );
+
+  document.addEventListener(
+    "submit",
+    function (event) {
+      if (!enabled || !siteBlockNewTabs()) return;
+      var form = event.target;
+      if (!form || form.tagName !== "FORM") return;
+      var target = form.getAttribute("target");
+      if (target && target.toLowerCase() !== "_self") {
+        form.removeAttribute("target");
       }
     },
     true

@@ -253,6 +253,10 @@ header {
   border-radius: 10px;
 }
 
+.feature[hidden] {
+  display: none;
+}
+
 .ft-text {
   min-width: 0;
 }

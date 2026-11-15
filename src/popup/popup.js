@@ -260,6 +260,8 @@ var alertlistEl = document.getElementById("alertlist");
 var wldomainEl = document.getElementById("wldomain");
 var wltoggleEl = document.getElementById("wltoggle");
 var ytadsEl = document.getElementById("ytads");
+var nbtFeatureEl = document.getElementById("nbtfeature");
+var nbtEl = document.getElementById("blocknewtabs");
 var techlistEl = document.getElementById("techlist");
 var techcountEl = document.getElementById("techcount");
 
@@ -395,6 +397,15 @@ ytadsEl.addEventListener("change", function () {
   chrome.storage.local.set({ youtubeAds: ytadsEl.checked });
 });
 
+nbtEl.addEventListener("change", function () {
+  if (!currentHost) return;
+  var base = baseDomain(currentHost);
+  var site = siteConfig[base] || {};
+  site.blockNewTabs = nbtEl.checked;
+  siteConfig[base] = site;
+  chrome.storage.local.set({ siteConfig: siteConfig });
+});
+
 document.getElementById("clearalerts").addEventListener("click", function () {
   chrome.runtime.sendMessage({ type: "adg:clearSecurity", tabId: activeTabId }, function () {
     refreshTab();
@@ -472,11 +483,17 @@ function renderWhitelist() {
   var host = currentHost;
   wldomainEl.textContent = host || "\u2014";
 
+  nbtFeatureEl.hidden = !host;
   if (!host) {
+    nbtEl.checked = false;
     wltoggleEl.hidden = true;
     netEl.textContent = settingsEnabled ? "Active" : "Off";
     return;
   }
+
+  var base = baseDomain(host);
+  var site = siteConfig[base] || {};
+  nbtEl.checked = site.blockNewTabs === true;
 
   var isWhitelisted = hostWhitelisted(host, whitelist);
   wltoggleEl.hidden = false;

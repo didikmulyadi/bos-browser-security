@@ -18,7 +18,7 @@ var RESOURCE_TYPES = [
   "websocket",
   "other"
 ];
-var SETTINGS_DEFAULT = { enabled: true, whitelist: [], youtubeAds: true };
+var SETTINGS_DEFAULT = { enabled: true, whitelist: [], youtubeAds: true, siteConfig: {} };
 
 function storageGet(area, keys) {
   return new Promise(function (resolve) {
@@ -97,6 +97,7 @@ function getCfg() {
     chrome.storage.local.get(SETTINGS_DEFAULT, function (cfg) {
       cfg.autoHandle = self.__ADG_normalizeAuto(cfg.autoHandle);
       cfg.whitelist = Array.isArray(cfg.whitelist) ? cfg.whitelist : [];
+      cfg.siteConfig = cfg.siteConfig && typeof cfg.siteConfig === "object" ? cfg.siteConfig : {};
       resolve(cfg);
     });
   });
@@ -612,10 +613,32 @@ async function openerWhitelisted(openerTabId) {
   }
 }
 
+async function openerBlocksNewTabs(openerTabId) {
+  if (openerTabId == null) return false;
+  try {
+    var cfg = await getCfg();
+    if (!cfg.enabled) return false;
+    var opener = await chrome.tabs.get(openerTabId);
+    var host = hostFromUrl(opener.url || opener.pendingUrl || "");
+    if (!host || hostWhitelisted(host, cfg.whitelist)) return false;
+    var base = P && P.baseDomain ? P.baseDomain(host) : host;
+    var site = cfg.siteConfig[base];
+    return !!(site && site.blockNewTabs === true);
+  } catch (e) {
+    return false;
+  }
+}
+
 chrome.tabs.onCreated.addListener(async function (tab) {
-  if (!adTab(tab)) return;
   var cfg = await getCfg();
   if (!cfg.enabled) return;
+
+  if (tab.openerTabId != null && (await openerBlocksNewTabs(tab.openerTabId))) {
+    chrome.tabs.remove(tab.id).catch(function () {});
+    return;
+  }
+
+  if (!adTab(tab)) return;
   if (await openerWhitelisted(tab.openerTabId)) return;
   chrome.tabs.remove(tab.id).catch(function () {});
 });

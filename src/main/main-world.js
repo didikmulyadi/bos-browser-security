@@ -32,6 +32,7 @@
   if (!P) return;
 
   var enabled = true;
+  var blockNewTabs = false;
 
   function report(kind, detail) {
     try {
@@ -52,6 +53,7 @@
     var data = event.data;
     if (data && data.__adgCfg === 1) {
       enabled = !!data.enabled;
+      blockNewTabs = !!data.blockNewTabs;
     }
   });
 
@@ -59,6 +61,10 @@
   window.open = function (url, name, features) {
     if (enabled) {
       var target = url == null ? "" : String(url);
+      if (blockNewTabs) {
+        report("popup", target || "blocked-new-tab");
+        return null;
+      }
       if (P.isAdUrl(target, location.href)) {
         report("popup", target);
         return null;
