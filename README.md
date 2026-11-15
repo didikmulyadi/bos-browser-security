@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `2.1.0`
+- Versi: `2.2.0`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -98,6 +98,12 @@ Catatan:
 - **Tidak menjamin 100% bebas iklan.** YouTube sering A/B test dan mengubah struktur; modul bisa patah kapan saja dan perlu dirawat.
 - Tidak mencoba melewati verifikasi Cloudflare/anti-bot.
 
+### 11. Anti-adblock (best-effort)
+- Melindungi elemen umpan deteksi (`adsbox`, `adsbygoogle`, `pub_300x250`, `textads`, `ad-banner`, `ad-placement`) supaya tetap terlihat oleh detektor anti-adblock.
+- Memalsukan probe `adsbygoogle.js` / `pagead2.googlesyndication.com` (fetch) agar tidak dianggap diblokir, sambil iklan asli tetap diblokir.
+- Menyembunyikan modal anti-adblock (deteksi teks seperti "Nonaktifkan Adblock") dan mengembalikan scroll halaman.
+- Menghormati toggle proteksi global dan jeda per domain. Best-effort; situs bisa mengubah teknik deteksinya.
+
 ---
 
 ## Instalasi
@@ -145,7 +151,8 @@ bos-browser-security/
     │   ├── main-world.js        # hook window.open, Location, blokir redirect
     │   ├── security.js          # hook keamanan, analisis script, auto-handle, OneTrust
     │   ├── tech.js              # technology profiler (framework/library + versi)
-    │   └── youtube.js           # modul iklan YouTube (strip ad response + UI)
+    │   ├── youtube.js           # modul iklan YouTube (strip ad response + UI)
+    │   └── antiadblock.js       # proteksi bait + probe anti-adblock
     ├── content/
     │   └── isolated.js          # filter kosmetik, frame cleaner, meta refresh, bridge pesan, whitelist
     ├── popup/

@@ -48,6 +48,7 @@
         <h4>Fitur</h4>
         <ul>
           <li><a href="#youtube">YouTube</a></li>
+          <li><a href="#antiadblock">Anti-adblock</a></li>
         </ul>
         <h4>Keamanan</h4>
         <ul>
@@ -72,7 +73,7 @@
         <p>
           Bos (Browser Security) adalah ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan,
           redirect otomatis, popup/tab iklan, sekaligus mendeteksi indikasi pencurian data.
-          Versi <strong>2.1.0</strong>, Chrome/Edge <strong>119+</strong>.
+          Versi <strong>2.2.0</strong>, Chrome/Edge <strong>119+</strong>.
         </p>
 
         <div class="callout">
@@ -233,6 +234,7 @@ src/
     security.js
     tech.js
     youtube.js
+    antiadblock.js
   content/
     isolated.js
   popup/
@@ -273,6 +275,19 @@ docs/</code></pre>
           <li>CSS menyembunyikan slot iklan, auto-klik tombol skip, dan fallback mempercepat/melewati video iklan.</li>
           <li>Tidak menjamin 100% bebas iklan: YouTube sering A/B test dan mengubah struktur; modul bisa patah kapan saja.</li>
           <li>Tidak mencoba melewati verifikasi Cloudflare/anti-bot.</li>
+        </ul>
+
+        <h2 id="antiadblock">Anti-adblock (best-effort)</h2>
+        <p>
+          Banyak situs mendeteksi adblock memakai elemen umpan kecil/off-screen dan probe fetch
+          ke script iklan. Bos melindungi elemen umpan umum dan memalsukan probe
+          <code>adsbygoogle.js</code> agar deteksi tidak terpicu, sambil iklan asli tetap diblokir.
+          Modal anti-adblock (mis. "Nonaktifkan Adblock") juga disembunyikan dan scroll halaman
+          dikembalikan.
+        </p>
+        <ul>
+          <li>Menghormati toggle proteksi global dan jeda per domain.</li>
+          <li>Best-effort: situs dapat mengubah teknik deteksi kapan saja.</li>
         </ul>
 
         <h2 id="batasan">Batasan</h2>

@@ -145,8 +145,50 @@
     return false;
   }
 
+  var BAIT_CLASS_RE = /(?:^|\s)(?:adsbox|adsbygoogle|pub_300x250|textads|ad-banner|ad-placement)(?:\s|$)/i;
+
+  function isAdBait(el) {
+    try {
+      var className = el.className;
+      if (typeof className !== "string") return false;
+      if (!BAIT_CLASS_RE.test(className)) return false;
+      var rect = el.getBoundingClientRect();
+      var style = el.getAttribute("style") || "";
+      var offscreen = /(?:left|top)\s*:\s*-\d{3,}px/i.test(style) || rect.right < 0 || rect.bottom < 0;
+      var tiny = el.offsetWidth <= 16 && el.offsetHeight <= 16;
+      return offscreen || tiny;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function protectAdBait(el) {
+    try {
+      el.style.setProperty("display", "block", "important");
+      el.style.setProperty("visibility", "visible", "important");
+      el.style.setProperty("opacity", "1", "important");
+      el.style.setProperty("position", "absolute", "important");
+      el.style.setProperty("left", "-9999px", "important");
+      el.style.setProperty("top", "-9999px", "important");
+      el.style.setProperty("width", "10px", "important");
+      el.style.setProperty("height", "10px", "important");
+    } catch (e) {}
+  }
+
+  function protectBaits() {
+    try {
+      var baits = document.querySelectorAll(
+        '[class*="adsbox"], [class*="adsbygoogle"], [class*="pub_300x250"], [class*="textads"], [class*="ad-banner"], [class*="ad-placement"]'
+      );
+      for (var i = 0; i < baits.length; i++) {
+        if (isAdBait(baits[i])) protectAdBait(baits[i]);
+      }
+    } catch (e) {}
+  }
+
   function removeAdClassNodes() {
     if (!enabled) return;
+    protectBaits();
     var nodes = document.querySelectorAll(AD_CLASS_SELECTOR);
     for (var i = 0; i < nodes.length; i++) {
       var el = nodes[i];
@@ -154,6 +196,10 @@
       var tag = el.tagName;
       if (tag === "HTML" || tag === "BODY" || tag === "HEAD") continue;
       if (!classLooksLikeAd(el)) continue;
+      if (isAdBait(el)) {
+        protectAdBait(el);
+        continue;
+      }
       el.remove();
     }
   }
@@ -221,6 +267,79 @@
     }
   }
 
+  var ANTI_ADBLOCK_RE =
+    /nonaktifkan adblock|disable adblock|adblock detected|matikan adblock|turn off adblock|adblock blocker|please disable.*adblock|whitelist.*adblock/i;
+
+  function unlockScroll() {
+    try {
+      if (document.body) {
+        document.body.style.removeProperty("overflow");
+        document.body.classList.remove("modal-open");
+      }
+      if (document.documentElement) {
+        document.documentElement.style.removeProperty("overflow");
+      }
+    } catch (e) {}
+  }
+
+  function hideFixedOverlays() {
+    try {
+      var nodes = document.querySelectorAll('[class*="backdrop"], [class*="overlay"]');
+      for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        try {
+          var cs = getComputedStyle(node);
+          if (cs.position === "fixed" && parseInt(cs.zIndex || "0", 10) >= 1000) {
+            node.style.setProperty("display", "none", "important");
+            node.setAttribute("aria-hidden", "true");
+          }
+        } catch (e) {}
+      }
+    } catch (e) {}
+  }
+
+  function cleanupAntiAdblock() {
+    if (!enabled) return;
+    var candidates = document.querySelectorAll(
+      '[role="dialog"][aria-modal="true"], [aria-modal="true"], .modal, [class*="modal"], [class*="popup"], [id*="adblock"], [class*="adblock"]'
+    );
+    var hidden = false;
+
+    for (var i = 0; i < candidates.length; i++) {
+      var el = candidates[i];
+      if (!el || !el.parentNode) continue;
+      var text = "";
+      try {
+        text = (el.textContent || "").slice(0, 3000);
+      } catch (e) {}
+      if (!ANTI_ADBLOCK_RE.test(text)) continue;
+
+      var target = el;
+      var parent = el.parentElement;
+      while (parent && parent !== document.body) {
+        try {
+          var cs = getComputedStyle(parent);
+          if (cs.position === "fixed" && parseInt(cs.zIndex || "0", 10) >= 1000) {
+            target = parent;
+            break;
+          }
+        } catch (e) {}
+        parent = parent.parentElement;
+      }
+
+      try {
+        target.style.setProperty("display", "none", "important");
+        target.setAttribute("aria-hidden", "true");
+        hidden = true;
+      } catch (e) {}
+    }
+
+    if (hidden) {
+      unlockScroll();
+      hideFixedOverlays();
+    }
+  }
+
   var scanScheduled = false;
 
   function scheduleScan() {
@@ -229,6 +348,7 @@
     queueMicrotask(function () {
       scanScheduled = false;
       removeAdClassNodes();
+      cleanupAntiAdblock();
       cleanupSelf();
       cleanupChildFrames();
     });
