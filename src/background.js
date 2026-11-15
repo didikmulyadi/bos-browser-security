@@ -613,44 +613,10 @@ async function openerWhitelisted(openerTabId) {
   }
 }
 
-async function openerBlocksNewTabs(openerTabId) {
-  if (openerTabId == null) return false;
-  try {
-    var cfg = await getCfg();
-    if (!cfg.enabled) return false;
-    var opener = await chrome.tabs.get(openerTabId);
-    var host = hostFromUrl(opener.url || opener.pendingUrl || "");
-    if (!host || hostWhitelisted(host, cfg.whitelist)) return false;
-    var base = P && P.baseDomain ? P.baseDomain(host) : host;
-    var site = cfg.siteConfig[base];
-    return !!(site && site.blockNewTabs === true);
-  } catch (e) {
-    return false;
-  }
-}
-
-function isGoogleUrl(tab) {
-  var url = tab.pendingUrl || tab.url || "";
-  try {
-    var host = new URL(url).hostname.toLowerCase();
-    return host === "google.com" || host.endsWith(".google.com");
-  } catch (e) {
-    return false;
-  }
-}
-
 chrome.tabs.onCreated.addListener(async function (tab) {
+  if (!adTab(tab)) return;
   var cfg = await getCfg();
   if (!cfg.enabled) return;
-
-  if (tab.openerTabId != null && (await openerBlocksNewTabs(tab.openerTabId))) {
-    if (!isGoogleUrl(tab)) {
-      chrome.tabs.remove(tab.id).catch(function () {});
-    }
-    return;
-  }
-
-  if (!adTab(tab)) return;
   if (await openerWhitelisted(tab.openerTabId)) return;
   chrome.tabs.remove(tab.id).catch(function () {});
 });
