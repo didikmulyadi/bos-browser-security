@@ -275,6 +275,10 @@
       if (document.body) {
         document.body.style.removeProperty("overflow");
         document.body.classList.remove("modal-open");
+        if (document.body.style.position === "fixed") {
+          document.body.style.removeProperty("position");
+          document.body.style.removeProperty("top");
+        }
       }
       if (document.documentElement) {
         document.documentElement.style.removeProperty("overflow");
@@ -340,6 +344,120 @@
     }
   }
 
+  var PROMO_RE =
+    /promo|diskon|klaim|akses tanpa iklan|upgrade.*premium|nonaktifkan adblock|adblock detected|adblock blocker/i;
+
+  function isScrollLocked() {
+    try {
+      if (document.body && document.body.style.overflow === "hidden") return true;
+      if (document.documentElement && document.documentElement.style.overflow === "hidden") return true;
+    } catch (e) {}
+    return false;
+  }
+
+  function hasVisibleBlocker() {
+    try {
+      var nodes = document.querySelectorAll('[role="dialog"][aria-modal="true"], [data-kv-popup]');
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        if (el.offsetWidth > 0 && el.offsetHeight > 0) {
+          var cs = getComputedStyle(el);
+          if (cs.display !== "none" && cs.visibility !== "hidden") return true;
+        }
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function clickCloseButton(root) {
+    try {
+      var buttons = root.querySelectorAll("button, a, [role='button']");
+      for (var i = 0; i < buttons.length; i++) {
+        var text = (buttons[i].textContent || "").trim().toLowerCase();
+        if (text === "tutup" || text === "close" || text.indexOf("tutup") === 0 || text.indexOf("close") === 0) {
+          try {
+            buttons[i].click();
+            return true;
+          } catch (e) {}
+        }
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function hideNode(node) {
+    try {
+      node.style.setProperty("display", "none", "important");
+      node.setAttribute("aria-hidden", "true");
+    } catch (e) {}
+  }
+
+  function cleanupPromoPopups() {
+    if (!enabled) return;
+    var handled = false;
+
+    var known = document.querySelectorAll("[data-kv-popup]");
+    for (var k = 0; k < known.length; k++) {
+      var host = known[k];
+      var hostRoot = null;
+      try {
+        hostRoot = host.shadowRoot;
+      } catch (e) {}
+      if (hostRoot) clickCloseButton(hostRoot);
+      hideNode(host);
+      handled = true;
+    }
+
+    if (isScrollLocked()) {
+      try {
+        var all = document.querySelectorAll("*");
+        for (var i = 0; i < all.length; i++) {
+          var node = all[i];
+          var root = null;
+          try {
+            root = node.shadowRoot;
+          } catch (e) {}
+          if (!root) continue;
+          var text = "";
+          try {
+            text = (root.textContent || "").slice(0, 2000);
+          } catch (e) {
+            continue;
+          }
+          if (!PROMO_RE.test(text)) continue;
+          clickCloseButton(root);
+          hideNode(node);
+          handled = true;
+        }
+      } catch (e) {}
+    }
+
+    var candidates = document.querySelectorAll(
+      '[role="dialog"][aria-modal="true"], [class*="popup"], [id*="popup"]'
+    );
+    for (var c = 0; c < candidates.length; c++) {
+      var el = candidates[c];
+      var content = "";
+      try {
+        content = (el.textContent || "").slice(0, 2000);
+      } catch (e) {}
+      if (!PROMO_RE.test(content)) continue;
+      var cs = null;
+      try {
+        cs = getComputedStyle(el);
+      } catch (e) {}
+      if (!cs || (cs.position !== "fixed" && cs.position !== "absolute")) continue;
+      if (!clickCloseButton(el)) hideNode(el);
+      handled = true;
+    }
+
+    if (handled) {
+      unlockScroll();
+    } else if (isScrollLocked() && !hasVisibleBlocker()) {
+      unlockScroll();
+    }
+  }
+
   var scanScheduled = false;
 
   function scheduleScan() {
@@ -349,6 +467,7 @@
       scanScheduled = false;
       removeAdClassNodes();
       cleanupAntiAdblock();
+      cleanupPromoPopups();
       cleanupSelf();
       cleanupChildFrames();
     });

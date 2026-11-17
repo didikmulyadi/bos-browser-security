@@ -2,7 +2,7 @@
 
 Ekstensi Chrome/Edge (Manifest V3) untuk memblokir iklan, redirect otomatis, popup/tab iklan, sekaligus mendeteksi dan menangani indikasi pencurian data di halaman web.
 
-- Versi: `2.3.4`
+- Versi: `2.4.0`
 - Browser: Chrome / Edge 119+
 - Dokumentasi online: https://didikmulyadi.github.io/bos-browser-security/
 - Lisensi: MIT
@@ -109,6 +109,11 @@ Catatan:
 - Klik `target="_blank"`, ctrl/middle-click, dan `window.open` tetap membuka tab, tetapi URL-nya diganti menjadi `https://google.com` (dibuat lewat background, jadi tetap terbuka walau popup diblokir).
 - Tab baru biasa dari browser (Ctrl+T, tab strip) tidak terpengaruh.
 - Toggle ini bekerja sendiri; tidak bergantung pada toggle proteksi utama.
+
+### 13. Popup promo & scroll lock (best-effort)
+- Menangani popup promo di **shadow DOM** (mis. `[data-kv-popup]`): klik tombol "Tutup" jika ada, lalu sembunyikan overlay.
+- Memulihkan scroll halaman (`overflow`, `position: fixed`) setelah popup/overlay dihilangkan.
+- Jika scroll terkunci padahal tidak ada overlay terlihat, scroll dipulihkan otomatis.
 - Menghormati jeda proteksi/whitelist situs.
 
 ---
